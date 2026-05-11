@@ -1,8 +1,14 @@
-recipe-name,chance,output-amount,output-resource,time,device,input-1-amount,input-1-resource,input-2-amount,input-2-resource,input-3-amount,input-3-resource,input-4-amount,input-4-resource,input-5-amount,input-5-resource,input-6-amount,input-6-resource,input-7-amount,input-7-resource,input-8-amount,input-8-resource,input-9-amount,input-9-resource
-plank,100%,200,plank,400,table saw,1,log
-coal,100%,120,coal,360,stone crusher,1,coal ore
-charcoal,100%,1,charcoal,4,crucible,1,plank
+recipe-name,output-amount,output-resource,time,device,input-1-amount,input-1-resource,input-2-amount,input-2-resource,input-3-amount,input-3-resource,input-4-amount,input-4-resource,input-5-amount,input-5-resource,input-6-amount,input-6-resource,input-7-amount,input-7-resource,input-8-amount,input-8-resource,input-9-amount,input-9-resource
+plank,200,plank,400,table saw,1,log
+coal,120,coal,360,stone crusher,1,coal ore
+charcoal,1,charcoal,4,crucible,1,plank
+charcoal powder,1,charcoal powder,4,grinder,1,charcoal
+coke and charcoal,1,coke,3,athanor,6,charcoal
+coke and charcoal,2,charcoal,3,athanor,6,charcoal
+coke,1,coke,6,crucible,1,coal
+coke powder,1,coke powder,12,grinder,1,coke
+black powder,2,black powder,12,advanced blender,1,sulfur powder,12,charcoal powder,150,limewater
 
-chamomile powder,100%,1,chamomile powder,3,grinder,1,chamomile
-chamomile,100%,60,flax,60,nursery
-flax,100%,60,flax,60,nursery
+chamomile powder,1,chamomile powder,3,grinder,1,chamomile
+chamomile,,60,flax,60,nursery
+flax,,60,flax,60,nursery

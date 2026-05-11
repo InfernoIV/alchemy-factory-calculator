@@ -83,12 +83,13 @@ def calculate_resource(resource, amount):
     collect_recipe(recipe_list, resource, amount)
     for recipe in recipe_list:
         print(recipe)
+        pass
     
 
 
 def collect_recipe(recipe_list, resource, amount):
     #lookup recipe
-    recipe, error = get_recipe(resource)
+    recipe, by_products, error = get_recipe(resource)
     #check for error
     if error != None:
         #return error
@@ -102,6 +103,15 @@ def collect_recipe(recipe_list, resource, amount):
 
         #add recipe to the list
         recipe_list.append(recipe)
+
+        #handle by_products
+        if by_products != None:
+            for by_product in by_products:
+                #remove the inputs (it's a by product)
+                by_product.inputs = {}
+                #add to list
+                recipe_list.append(by_product)
+
 
         #for every input
         for inner_resouce, inner_amount in recipe.inputs.items():

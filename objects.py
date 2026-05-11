@@ -16,12 +16,15 @@ class recipe(object):
     factor_amount = 1
     child_recipes = {}
     cauldron_recipe = False
+    is_by_product = False
 
     # The class "constructor" - It's actually an initializer 
-    def __init__(self, dict, cauldron_recipe):
+    def __init__(self, dict, cauldron_recipe = False, is_by_product = False):
         #recipe-name, output-amount, output-resource, time, device, input-1-amount, input-1-resource,
         #save if this is a cauldron recipe
         self.cauldron_recipe = cauldron_recipe
+        self.is_by_product = is_by_product
+
         #print("dict: ", dict)
 
         #guard clauses
@@ -85,7 +88,7 @@ class recipe(object):
         #if there is a guard
         if flag_guarded == True:
             #stop the script
-            sys.exit(f"dict: {dict}")  
+            sys.exit(f"EXITING, dict: {dict}")  
 
 
 
@@ -154,13 +157,14 @@ class recipe(object):
                 inputs += ", "
             inputs += f"{amount:.2f} {resource}"
 
-        #string to return
-        string = f"recipe '{self.name}' requires {self.amount:.2f} {self.output} using {self.device_amount} {self.device_name}"
+        string = f"recipe '{self.name}' creates {self.amount:.2f} {self.output} using {self.device_amount} {self.device_name}"
         
         if inputs != "":
+        #string to return
             string += f" with inputs: {inputs}"
-
-        #return the string
+        elif self.is_by_product:
+            string += " as by-product"
+        
         return string
     
 
@@ -170,12 +174,8 @@ class recipe(object):
         self.factor_amount = amount / self.amount
         #set the amount to the needed amount
         self.amount = amount
-
-        #print(f"before: {self.device_amount}, factor: {self.factor_amount}")
         #calculate the needed devices
         self.device_amount =  math.ceil(self.device_amount * self.factor_amount)
-        #print(f"after: {self.device_amount}")
-        
         #calculate the inputs
         for resource in self.inputs.keys():
             self.inputs[resource] *= self.factor_amount

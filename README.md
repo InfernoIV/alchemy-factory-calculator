@@ -9,12 +9,12 @@ Amount gives a specific amount, if omitted: gives the original (time scaled) rec
 
 e.g.
 python3 main.py plank 5
+python3 main.py coke
 python3 main.py "copper powder"
 
 
 TODO list:
-1. add chance calculation (needed?)
-2. add preferred recipes
+
 3. fill up recipe book
 4. table print
 5. consolidate recipes (in printing) 
