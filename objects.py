@@ -15,100 +15,134 @@ class recipe(object):
     factor_time = 1
     factor_amount = 1
     child_recipes = {}
+    cauldron_recipe = False
 
     # The class "constructor" - It's actually an initializer 
-    def __init__(self, dict):
+    def __init__(self, dict, cauldron_recipe):
         #recipe-name, output-amount, output-resource, time, device, input-1-amount, input-1-resource,
-
+        #save if this is a cauldron recipe
+        self.cauldron_recipe = cauldron_recipe
         #print("dict: ", dict)
 
         #guard clauses
         flag_guarded = False
         
-        #check the number
-        if dict["recipe-name"] == "":
-            #set flag
-            flag_guarded = True 
-            #missing number
-            print("Missing recipe-name")
         
-        #check the number
-        if dict["output-amount"] == "":
-            #set flag
-            flag_guarded = True 
-            #missing number
-            print("Missing output-amount")
 
-        #check the number
+        #check the output
         if dict["output-resource"] == "":
             #set flag
             flag_guarded = True 
             #missing number
             print("Missing output-resource")
 
-        #check the number
-        if dict["time"] == "":
-            #set flag
-            flag_guarded = True 
-            #missing number
-            print("Missing time")
-
-       #check the number
-        if dict["device"] == "":
-            #set flag
-            flag_guarded = True 
-            #missing number
-            print("Missing device")
-
-        #check the number
-        if dict["input-1-amount"] == "":
-            #set flag
-            flag_guarded = True 
-            #missing number
-            print("Missing input-1-amount")
+       
 
         #check the number
         if dict["input-1-resource"] == "":
             #set flag
             flag_guarded = True 
             #missing number
-            print("Missing input-1-resource")
-                  
+            print("Missing input-1-resource")        
+
+        #if cauldron recipe          
+        if self.cauldron_recipe:
+            #check if amount is filled in
+            if dict["amount"] == "":
+                #set flag
+                flag_guarded = True 
+                #missing number
+                print("Missing amount")
+        else:
+            #check the name
+            if dict["recipe-name"] == "":
+                #set flag
+                flag_guarded = True 
+                #missing number
+                print("Missing recipe-name")
+
+            #check if amount is filled in
+            if dict["output-amount"] == "":
+                #set flag
+                flag_guarded = True 
+                #missing number
+                print("Missing output-amount")
+
+            #check the number
+            if dict["time"] == "":
+                #set flag
+                flag_guarded = True 
+                #missing number
+                print("Missing time")
+
+            #check the number
+            if dict["device"] == "":
+                #set flag
+                flag_guarded = True 
+                #missing number
+                print("Missing device")
+
         #if there is a guard
         if flag_guarded == True:
             #stop the script
             sys.exit(f"dict: {dict}")  
 
+
+
         #data is correct, start conversion to object 
-        self.name = dict["recipe-name"]
-        self.output = dict["output-resource"]
-        self.device_name = dict["device"]
-        self.inputs = {}
-        
-        #normalize to 60s
-        self.time = int(dict["time"])
-        #calculate time factor (this also applies to input)
-        self.factor_time = 60/self.time
-        #re-set the time to 60 s
-        self.time = 60
-        #apply time factor to 
-        self.amount = self.factor_time*int(dict["output-amount"])
+        self.output = dict["output-resource"].lower()
+        self.inputs = {}  
 
+        #specifics to cauldron recipe
+        if self.cauldron_recipe:
+            self.name = f"{self.output} (cauldron)"
+            self.time = 60
+            self.factor_time = 1
+            self.device_name = "cauldron"
+            self.amount = int(dict["amount"])
 
-
-        #for the possible inputs
-        for i in range(1, 9): 
-            #if resource is empty
-            if dict[f"input-{i}-resource"] == None or dict[f"input-{i}-amount"] == "":
-                #no more resources: stop
-                break
-            else:
+            #for the possible inputs
+            for i in range(1, 4): 
                 #get resource
                 resource = dict[f"input-{i}-resource"]
-                #get amount
-                amount = self.factor_time*int(dict[f"input-{i}-amount"])
+                
                 #add information to list
-                self.inputs[resource] = amount
+                self.inputs[resource] = self.amount 
+
+        #specifics to normal recipe
+        else:
+            self.name = dict["recipe-name"].lower()
+            #set device name
+            self.device_name = dict["device"].lower()
+            #normalize to 60s
+            self.time = int(dict["time"])
+            #calculate time factor (this also applies to input)
+            self.factor_time = 60/self.time
+            #re-set the time to 60 s
+            self.time = 60
+            #get amount
+            amount = int(dict["output-amount"])          
+            #apply time factor to amount
+            self.amount = self.factor_time * amount
+
+            #for the possible inputs
+            for i in range(1, 9): 
+                #if entry does not exist
+                if f"input-{i}-resource" not in dict.keys():
+                    #no more resources: stop
+                    break
+
+                #if resource is empty
+                if dict[f"input-{i}-resource"] == None or dict[f"input-{i}-amount"] == "":
+                    #no more resources: stop
+                    break
+                else:
+                    #get resource
+                    resource = dict[f"input-{i}-resource"]
+                    #get amount
+                    amount = self.factor_time*int(dict[f"input-{i}-amount"])
+                    #add information to list
+                    self.inputs[resource] = amount
 
 
 
@@ -121,7 +155,11 @@ class recipe(object):
             inputs += f"{amount:.2f} {resource}"
 
         #string to return
-        string = f"{self.amount:.2f} {self.output} requires {self.device_amount} {self.device_name} with inputs: {inputs}"
+        string = f"recipe '{self.name}' requires {self.amount:.2f} {self.output} using {self.device_amount} {self.device_name}"
+        
+        if inputs != "":
+            string += f" with inputs: {inputs}"
+
         #return the string
         return string
     

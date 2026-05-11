@@ -26,7 +26,7 @@ def handle_program(arguments):
         return error
 
     #debug
-    print("Input: ", amount, " * ", resource)
+    #print("Input: ", amount, " * ", resource)
     #calculate resources
     calculate_resource(resource, amount)
 
@@ -82,7 +82,7 @@ def calculate_resource(resource, amount):
     recipe_list = []
     collect_recipe(recipe_list, resource, amount)
     for recipe in recipe_list:
-        print("recipe: ", recipe)
+        print(recipe)
     
 
 
@@ -107,6 +107,11 @@ def collect_recipe(recipe_list, resource, amount):
         for inner_resouce, inner_amount in recipe.inputs.items():
             #collect the recipe
             collect_recipe(recipe_list, inner_resouce, inner_amount) 
+
+
+
+def print_table():
+    pass
 
 #exectue main function
 main()
