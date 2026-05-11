@@ -56,7 +56,11 @@ def get_recipe(resource):
                         chosen_recipe = recipe
                         
                         break
-                #return None, None, "Multiple recipes, but no preferred recipe!"
+                #if no recipe found
+                if chosen_recipe == None:
+                    #throw error
+                    print(f"Multiple recipes for '{resource}', but no preferred recipe!: '{recipes}' ")
+                    return None, None, "Multiple recipes, but no preferred recipe!"
             
             #get all output of this recipe
             all_output_of_recipe, error = get_recipes_by_name(chosen_recipe.name, resource)

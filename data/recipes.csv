@@ -1,14 +1,177 @@
-recipe-name,output-amount,output-resource,time,device,input-1-amount,input-1-resource,input-2-amount,input-2-resource,input-3-amount,input-3-resource,input-4-amount,input-4-resource,input-5-amount,input-5-resource,input-6-amount,input-6-resource,input-7-amount,input-7-resource,input-8-amount,input-8-resource,input-9-amount,input-9-resource
-plank,200,plank,400,table saw,1,log
-coal,120,coal,360,stone crusher,1,coal ore
-charcoal,1,charcoal,4,crucible,1,plank
-charcoal powder,1,charcoal powder,4,grinder,1,charcoal
-coke and charcoal,1,coke,3,athanor,6,charcoal
-coke and charcoal,2,charcoal,3,athanor,6,charcoal
-coke,1,coke,6,crucible,1,coal
-coke powder,1,coke powder,12,grinder,1,coke
-black powder,2,black powder,12,advanced blender,1,sulfur powder,12,charcoal powder,150,limewater
+recipe-name,chance,output-amount,output-resource,time,device,input-1-amount,input-1-resource,input-2-amount,input-2-resource,input-3-amount,input-3-resource,input-4-amount,input-4-resource,input-5-amount,input-5-resource,input-6-amount,input-6-resource,input-7-amount,input-7-resource,input-8-amount,input-8-resource,input-9-amount,input-9-resource
 
-chamomile powder,1,chamomile powder,3,grinder,1,chamomile
-chamomile,,60,flax,60,nursery
+plank,,200,plank,400,table saw,1,log
+coal,,120,coal,360,stone crusher,1,coal ore
+charcoal,,1,charcoal,4,crucible,1,plank
+charcoal powder,,1,charcoal powder,4,grinder,1,charcoal
+coke and charcoal,,1,coke,3,athanor,6,charcoal
+coke and charcoal,,2,charcoal,3,athanor,6,charcoal
+coke,,1,coke,6,crucible,1,coal
+coke powder,,1,coke powder,12,grinder,1,coke
+black powder,,2,black powder,12,advanced blender,1,sulfur powder,12,charcoal powder,150,limewater
+blast potion,,1,blast potion,6,advanced blender,1,oblivion essence,2,black powder,40,Brandy
+panacea potion,,1,panacea potion,6,advanced blender,3,fertile catalyst,3,blast potion,12,aqua vitae
+
+stone,,150,stone,450,stone crusher,1,limestone
+iron ingot,,100,iron ingot,600,iron smelter,1,iron ore
+sulfur and iron ingot,,40,sulfur,960,iron smelter,1,pyrite ore
+sulfur and iron ingot,,120,iron ingot,960,iron smelter,1,pyrite ore
+crude shard,,80,crude shard,480,stone crusher,1,quartz ore
+stone and coal,,300,stone,3000,stone crusher,1,meteorite
+stone and coal,,300,coal,3000,stone crusher,1,meteorite
+stone and coal,,300,iron sand,3000,stone crusher,1,meteorite
+stone and coal,,60,shattered crystal,3000,stone crusher,1,meteorite
+stone and coal,,30,obsidian,3000,stone crusher,1,meteorite
+stone and coal,,7,adamant,3000,stone crusher,1,meteorite
+stone and coal,,1,ruby,3000,stone crusher,1,meteorite
+stone and coal,,1,sapphire,3000,stone crusher,1,meteorite
+stone and coal,,1,emerald,3000,stone crusher,1,meteorite
+quicklime,,1,quicklime,9,crucible,1,stone
+steel ingot and iron ingot,25,1,steel ingot,4,athanor,1,iron ingot,1,coke powder
+steel ingot and iron ingot,75,1,iron ingot,4,athanor,1,iron ingot,1,coke powder
+clay,,1,clay,4,assembler,2,charcoal powder,4,sand
+brick,,1,brick,6,kiln,1,clay
+glass,,1,glass,6,kiln,6,sand
+bronze ingot,,1,bronze ingot,12,crucible,1,impure copper powder
+copper ingot,,1,copper ingot,12,crucible,1,copper powder
+perfect diamond,,1,perfect diamond,3,refiner,2,diamond
+crude shard 2,,1,crude shard,3,refiner,2,fully refined sand
+fully refined sand,,1,refined sand 6,3,refiner,2,refined sand 5
+refined sand 5,,1,refined sand 5,3,refiner,2,refined sand 4
+refined sand 4,,1,refined sand 4,3,refiner,2,refined sand 3
+refined sand 3,,1,refined sand 3,3,refiner,2,refined sand 2
+refined sand 2,,1,refined sand 2,3,refiner,2,refined sand 1
+refined sand 1,,1,refined sand 1,3,refiner,2,sand
+broken shard,,1,broken shard,3,refiner,2,crude shard
+dull shard,,1,dull shard,3,refiner,2,broken shard
+shattered crystal,,1,shattered crystal,3,refiner,2,dull shard
+crude crystal,,1,crude crystal,3,refiner,2,shattered crystal
+polished crystal,,1,polished crystal,3,refiner,2,crude crystal
+adamant,,1,adamant,3,refiner,2,polished crystal
+diamond,,1,diamond,3,refiner,2,adamant
+silver ingot,,1,silver ingot,16,crucible,1,silver powder
+gold ingot,,1,gold ingot,40,crucible,1,pure gold dust
+iron ingot 2,,1,iron ingot,6,crucible,1,iron sand
+gold ingot 2,,2,gold ingot,40,kiln,3,gold coin
+silver ingot 2,,1,silver ingot,16,kiln,6,silver coin
+copper ingot 2,,1,copper ingot,12,kiln,400,copper coin
+
+salt and sand,,100,salt,600,stone crusher,1,rock salt
+salt and sand,,100,sand,600,stone crusher,1,rock salt
+large wooden gear,,1,large wooden gear,6,grinder,1,plank
+wooden pulley,,1,wooden pulley,4,assembler,2,plank,1,linen rope
+mortar,,1,mortar,20,processor,5,stone
+iron nails,,3,iron nails,12,processor,1,iron ingot
+steel gear,,1,steel gear,16,processor,1,steel ingot
+bronze rivet,,3,bronze rivet,12,processor,1,bronze ingot
+copper bearing,,2,copper bearing,12,processor,1,copper ingot
+linen rope,,1,linen rope,6,processor,2,linen thread
+linen,,1,linen,5,assembler,10,linen thread
+salt and sand 2,33,1,salt,6,athanaor,2,charcoal powder,4,quicklime powder
+salt and sand 2,66,6,sand,6,athanaor,2,charcoal powder,4,quicklime powder
+soap,,1,soap,3,blender,3,plant ash,200,lineseed oblivion
+small wooden gear,,3,small wooden gear,12,processor,1,large wooden gear
+perfumed soap,,1,perfumed soap,8,blender,4,soap powder,30,lavender essential oil
+bandage,,1,bandage,10,assembler,1,linen,2,healing potion
+moonlit soap,,1,moonlit soap,10,blender,2,perfumed soap powder,5,moon tear
+
+gloom fungus and plank,,40,gloom fungus,400,table saw,1,rotten log
+gloom fungus and plank,,160,plank,400,table saw,1,rotten log
 flax,,60,flax,60,nursery
+sage,,60,sage,60,nursery
+redcurrant,,60,redcurrant,60,nursery
+lavender,,60,lavender,60,nursery
+chamomile,,60,chamomile,60,nursery
+gentian and gentian nectar,,30,gentian,60,nursery
+gentian and gentian nectar,,30,gentian nectar,60,nursery
+world tree leaf and world tree core,,99,world tree leaf,300,world tree nursery
+world tree leaf and world tree core,,1,world tree core,300,world tree nursery
+
+flax fiber,,1,flax fiber,3,grinder,1,flax
+plant ash,,1,plant ash,3,crucible,1,sage
+sage powder,,1,sage powder,3,grinder,1,sage
+chamomile powder,,1,chamomile powder,3,grinder,1,chamomile
+gentian powder,,1,gentian powder,3,grinder,1,gentian
+sand,,1,sand,12,grinder,1,stone
+iron sand,,1,iron sand,3,grinder,1,iron ingot
+clay powder,,1,clay powder,4,grinder,1,clay
+copper powder,,1,copper powder,6,refiner,2,impure copper powder
+sulfur powder,,1,sulfur powder,6,grinder,1,sulfur
+copper powder and impure copper powder,50,1,copper powder,6,athanor,6,iron sand,6,soap powder
+copper powder and impure copper powder,50,1,impure copper powder,6,athanor,6,iron sand,6,soap powder
+quicklime powder,,1,quicklime powder,9,grinder,1,quicklime
+soap powder,,1,soap powder,6,grinder,1,soap
+perfumed soap powder,,1,perfumed soap powder,8,grinder,1,perfumed soap
+silver powder and crude silver powder,20,1,silver powder,6.4,advanced athanor,2,copper powder,2,unstable catalyst,2,black powder
+silver powder and crude silver powder,80,1,crude silver powder,6.4,advanced athanor,2,copper powder,2,unstable catalyst,2,black powder
+impure silver powder,,1,impure silver powder,8,refiner,2,crude silver powder
+silver powder,,1,silver powder,8,refiner,2,impure silver powder
+gold dust and impure gold dust,10,1,gold dust,1,silver powder,1,volcanic ash,1,fertile catalyst,12,quicksilver
+gold dust and impure gold dust,30,1,impure gold dust,1,silver powder,1,volcanic ash,1,fertile catalyst,12,quicksilver
+gold dust and impure gold dust,60,1,crude gold dust,1,silver powder,1,volcanic ash,1,fertile catalyst,12,quicksilver
+pure gold dust,,1,pure gold dust,10,refiner,2,gold dust
+impure gold dust,,1,impure gold dust,10,refiner,2,crude gold dust
+gold dust,,1,gold dust,10,refiner,2,impure gold dust
+copper powder 2,,1,copper powder,12,grinder,1,copper ingot
+silver powder 2,,1,silver powder,17,grinder,1,silver ingot
+pure gold dust 2,,1,pure gold dust,40,grinder,1,gold ingot
+volcanic ash,,1,volcanic ash,24,grinder,1,obsidian
+
+gloom spores,,1,gloom spores,4,assembler,2,gloom fungus,1,yeast powder
+yeast powder,,1,yeast powder,4,blender,2,soap powder,40,fruit wine
+fertile catalyst,,1,fertile catalyst,8,advanced blender,1,unstable catalyst,1,vitality essence,18,lavender essential oil
+unstable catalyst,,1,unstable catalyst,4,advanced assembler,1,chamomile powder,1,gloom spores,1,sulfur powder
+eternal catalyst,,1,eternal catalyst,60,arcane processor,15,resonant catalyst,1,philosophers stone
+resonant catalyst,,1,resosnant catalyst,8,advanced blender,1,fertile catalyst,1,volcanic ash,12,aqau vitae
+
+malachite and crude shard,50,1,malachite,12,athanor,2,impure copper powder,6,clay powder
+malachite and crude shard,50,1,crude shard,12,athanor,2,impure copper powder,6,clay powder
+ruby,,1,ruby,30.9,cauldron,1,diamond,1,pure gold dust,1,resonant catalyst
+turquoise,,1,turquoise,12,assembler,2,healing potion,12,sand
+Topaz,,1,topaz,12,blender,1,crude shard,30,sulfuric acid
+pocket watch,,1,pocket watch,12,advanced assembler,2,steel gear,2,copper bearing,6,glass
+sapphire,,1,sapphire,38.2,cauldron,1,perfect diamond,1,world tree core,1,unstable catalyst
+lapis lazuli and shattered crystal,33,1,lapis lazuli,12,advanced athanor,1,impure silver powder,4,crude shard,4,gentian powder
+lapis lazuli and shattered crystal,33,1,shattered crystal,12,advanced athanor,1,impure silver powder,4,crude shard,4,gentian powder
+lapis lazuli and shattered crystal,33,1,crude shard,12,advanced athanor,1,impure silver powder,4,crude shard,4,gentian powder
+diamond,,1,diamond,3,refiner,2,adamant
+silver amulet,,1,silver amulet,10,assembler,2,silver ingot,1,lapis lazuli
+crown,,1,crown,15,advanced assembler,3,gold ingot,1,ruby,1,sapphire
+obsidian and volcanic ash,50,1,obsidian,6,advanced athanor,1,oblivion essence,1,shattered crystal,1,unstable catalyst
+obsidian and volcanic ash,50,1,volcanic ash,6,advanced athanor,1,oblivion essence,1,shattered crystal,1,unstable catalyst
+emerald,,1,emerald,45.5,cauldron,1,moonlit soap,1,lapis lazuli,1,ferile catalyst
+
+lineseed oil,,50,lineseed oil,2,extractor,1,flax
+fruit wine,,10,fruit wine,6,extractor,1,redcurrant
+limewater,,30,limewater,3,extractor,1,quicklime powder
+lavender essential oil,,15,lavender essential oil,3,alembic,3,lavender,300,lineseed oil
+brine,,20,brine,4,extractor,1,salt
+brandy,,40,brandy,5,alembic,5,coke powder,100,fruit wine
+sulfuric acid,,20,sulfuric acid,4,alembic,1,sulfur powder,60,brine
+aqua vitae,,10,aqua vitae,8,advanced alembic,1,gentian nectar,1,world tree leaf,200,brandy
+quicksilver,,10,quicksilver,8,advanced alembic,1,crude silver powder,1,vitality essence,80,sulfuric acid
+moon tear,,1,moon tear,8,advanced alembic,16,star dust,10,fairy tear
+fairy tear,,1,fairy tear,4,extractor,1,fairy dust
+
+healing potion,,1,healing potion,6,assembler,6,sage powder,6,flax fiber
+vitality potion,,1,vitality potion,8,blender,4,quicklime powder,80,fruit wine
+transformation potion,,1,transformation potion,6,assembler,2,coke powder,1,gloom spores
+growth potion,,1,growth potion,6,advanced blender,2,chamomile powder,6,clay powder,80,brine
+blast potion,,1,blast potion,6,advanced blender,1,oblivion essence,2,black powder,40,brandy
+
+basic fertilizer,,1,basic fertilizer,4,assembler,1,plant ash,1,quicklime powder
+advanced fertilizer,,1,advanced fertilizer,4,assembler,1,basic fertilizer,1,gloom fungus
+
+jupiter,,1,jupiter,600,shaper,1200,plank,1800,small wooden gear,600,wooden pulley
+saturn,,1,saturn,300,shaper,600,salt,600,brick,600,glass
+mars,,1,mars,300,shaper,600,iron nails,300,steel gear,600,bronze rivet,300,copper bearing
+venus,,1,venus,1200,advanced shaper,200,healing potion,200,vitality potion,200,transformation potion,200,growth potion,200,blast potion,4000,sulfuric acid
+mercury,,1,mercury,600,advanced shaper,100,turquoise,100,malachite,100,topaz,100,obsidian,100,lapis lazuli,1000,quicksilver
+luna,,1,luna,600,advanced shaper,75,steel ingot,75,bronze ingot,75,copper ingot,75,siler ingot,75,gold ingot,75,moon tear
+sol,,1,sol,300,arcane shaper,1,jupiter,1,saturn,1,mars,1,venuc,1,mercury,1,luna,25,perfect diamond,5,eternal catalyst,5,world tree core
+
+Philosophers stone,,1,philosophers stone,60,cauldron,1,ruby,1,sapphire,1,emerald
+fairy dust,,1,fairy dust,4,arcane processor,1,chamomile powder,1,gentian powder,1,world tree leaf
+Oblivion essence,,1,oblivion essence,16,paradox crucible,1,gentian
+vitality essence,,1,vitality essence,5.1,paradox crucible,1,oblivion essence
+star dust,,50,star dust,300,arcane processor,1,jupiter,1,saturn,1,mars

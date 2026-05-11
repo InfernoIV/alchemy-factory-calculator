@@ -38,32 +38,33 @@ def handle_program(arguments):
 
 
 #function that checks the input arguments
-def process_input(arguments):    
+def process_input(arguments):  
+    #remove the script name, only keeping arguments
+    arguments.pop(0)
+    #save the number of arguments for easy lookup
+    number_of_arguments = len(arguments)
     #check if there are arguments
-    if len(arguments) < 2:
+    if number_of_arguments < 1:
         #set error
         return None, None, SyntaxError("No arguments!")
-    elif len(arguments) > 3:
-        #set error
-        return None, None, SyntaxError("Too many arguments!")
+    
+    #there are arguments
     else:
-        #correct amount of arguments, check arguments
-        if sys.argv[1].isdigit():
-            #set error
-            return None, None, SyntaxError("Resource is a number!")
-        
-        #get the resource
-        resource = sys.argv[1].lower()
-        
-        #if no amount provided
-        if len(arguments) == 2:
-            #just return the resource
-            return resource, None, None
-        else:
-            #get the amount
-            amount = int(sys.argv[2])
-            #return all
+        #if the last argument is a digit
+        if arguments[number_of_arguments-1].isdigit():
+            #this should be amount
+            amount = int(arguments[number_of_arguments-1])
+            #the rest are text for the resource
+            resource = " ".join(arguments[:number_of_arguments-1]).lower()
+            #return data
             return resource, amount, None
+        
+        #only text
+        else:
+            #all text for resource
+            resource = " ".join(arguments).lower()
+            #return data
+            return resource, None, None
 
 
 

@@ -17,6 +17,7 @@ class recipe(object):
     child_recipes = {}
     cauldron_recipe = False
     is_by_product = False
+    chance = 1
 
     # The class "constructor" - It's actually an initializer 
     def __init__(self, dict, cauldron_recipe = False, is_by_product = False):
@@ -102,7 +103,7 @@ class recipe(object):
             self.time = 60
             self.factor_time = 1
             self.device_name = "cauldron"
-            self.amount = int(dict["amount"])
+            self.amount = float(dict["amount"])
 
             #for the possible inputs
             for i in range(1, 4): 
@@ -118,13 +119,19 @@ class recipe(object):
             #set device name
             self.device_name = dict["device"].lower()
             #normalize to 60s
-            self.time = int(dict["time"])
+            self.time = float(dict["time"])
             #calculate time factor (this also applies to input)
             self.factor_time = 60/self.time
             #re-set the time to 60 s
             self.time = 60
+            #get chance (if applicable)
+            if dict["chance"] != "":
+                self.chance = int(dict["chance"]) / 100
+
             #get amount
-            amount = int(dict["output-amount"])          
+            amount = float(dict["output-amount"])
+            #add the chance factor
+            amount *= self.chance          
             #apply time factor to amount
             self.amount = self.factor_time * amount
 
@@ -143,7 +150,7 @@ class recipe(object):
                     #get resource
                     resource = dict[f"input-{i}-resource"]
                     #get amount
-                    amount = self.factor_time*int(dict[f"input-{i}-amount"])
+                    amount = self.factor_time*float(dict[f"input-{i}-amount"])
                     #add information to list
                     self.inputs[resource] = amount
 
@@ -157,14 +164,18 @@ class recipe(object):
                 inputs += ", "
             inputs += f"{amount:.2f} {resource}"
 
-        string = f"recipe '{self.name}' creates {self.amount:.2f} {self.output} using {self.device_amount} {self.device_name}"
-        
-        if inputs != "":
-        #string to return
-            string += f" with inputs: {inputs}"
-        elif self.is_by_product:
+        string = f"recipe '{self.name}' creates {self.amount:.2f} {self.output}"
+        if self.is_by_product:
             string += " as by-product"
-        
+
+        else:
+            string += f" using {self.device_amount} {self.device_name}"
+            #if there are inputs
+            if inputs != "":
+            #string to return
+                string += f" with inputs: {inputs}"
+
+        #return the string
         return string
     
 

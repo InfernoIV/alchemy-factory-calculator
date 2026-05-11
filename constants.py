@@ -4,5 +4,12 @@ ___CSV_CAULDRON____ = "data/cauldron.csv"
 
 ___PREFERRED_RECIPES___ = [
     "coke",
-    "charcoal"
+    "charcoal",
+    "iron ingot",
+    "coal",
+    "copper ingot",
+    "sand",
+    "stone",
+    "plank",
+    "crude shard"
 ]
