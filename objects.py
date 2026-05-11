@@ -1,5 +1,5 @@
 import sys
-
+import math
 
 #base pokemon object, containing information of the pokemon
 class recipe(object):
@@ -9,9 +9,12 @@ class recipe(object):
     output = ""
     amount = 0
     time = 0
-    device = ""
-    inputs = []
-    
+    device_name = ""
+    device_amount = 1
+    inputs = {}
+    factor_time = 1
+    factor_amount = 1
+    child_recipes = {}
 
     # The class "constructor" - It's actually an initializer 
     def __init__(self, dict):
@@ -79,37 +82,62 @@ class recipe(object):
         #data is correct, start conversion to object 
         self.name = dict["recipe-name"]
         self.output = dict["output-resource"]
-        self.amount = int(dict["output-amount"])
-        self.time = int(dict["time"])
-        self.device = dict["device"]
-        self.inputs = []
+        self.device_name = dict["device"]
+        self.inputs = {}
         
-        #self.factor = 60/self.time
+        #normalize to 60s
+        self.time = int(dict["time"])
+        #calculate time factor (this also applies to input)
+        self.factor_time = 60/self.time
+        #re-set the time to 60 s
+        self.time = 60
+        #apply time factor to 
+        self.amount = self.factor_time*int(dict["output-amount"])
+
+
 
         #for the possible inputs
         for i in range(1, 9): 
-            #get resource
-            resource = dict[f"input-{i}-resource"]
-            #get amount
-            amount = dict[f"input-{i}-amount"]
             #if resource is empty
-            if resource == None or resource == "":
+            if dict[f"input-{i}-resource"] == None or dict[f"input-{i}-amount"] == "":
                 #no more resources: stop
                 break
             else:
+                #get resource
+                resource = dict[f"input-{i}-resource"]
+                #get amount
+                amount = self.factor_time*int(dict[f"input-{i}-amount"])
                 #add information to list
-                self.inputs.append({resource:amount})
+                self.inputs[resource] = amount
 
 
 
     #function that will print when converted to str
     def __repr__(self):
+        inputs = ""
+        for resource, amount in self.inputs.items():
+            if inputs != "":
+                inputs += ", "
+            inputs += f"{amount:.2f} {resource}"
+
         #string to return
-        string = f"{self.amount} {self.output} requires {self.time}s on a {self.device} with the following inputs: {self.inputs}"
-        #for each attribute
-        #for attr, value in self.__dict__.items():
-            #add to return string
-        #    string += f"'{attr}': '{value}', "
-        #remove string while removing the last ', ' 
-        #return string[:-2]
+        string = f"{self.amount:.2f} {self.output} requires {self.device_amount} {self.device_name} with inputs: {inputs}"
+        #return the string
         return string
+    
+
+
+    def adjust_amount(self, amount):
+        #calculate the factor
+        self.factor_amount = amount / self.amount
+        #set the amount to the needed amount
+        self.amount = amount
+
+        #print(f"before: {self.device_amount}, factor: {self.factor_amount}")
+        #calculate the needed devices
+        self.device_amount =  math.ceil(self.device_amount * self.factor_amount)
+        #print(f"after: {self.device_amount}")
+        
+        #calculate the inputs
+        for resource in self.inputs.keys():
+            self.inputs[resource] *= self.factor_amount

@@ -1,7 +1,7 @@
 #imports
 import sys
 from objects import recipe
-from data_lookup import get_recipes, get_recipes_cauldron
+from data_lookup import get_recipe
 
 #main function
 def main():
@@ -24,11 +24,12 @@ def handle_program(arguments):
     resource, amount, error = process_input(arguments)
     if error != None:
         return error
-    
+
     #debug
     print("Input: ", amount, " * ", resource)
     #calculate resources
     calculate_resource(resource, amount)
+
     return None
 
     #not a valid command
@@ -50,16 +51,19 @@ def process_input(arguments):
         if sys.argv[1].isdigit():
             #set error
             return None, None, SyntaxError("Resource is a number!")
-        if not sys.argv[2].isdigit():
-            #set error
-            return None, None, SyntaxError("Amount is not a number!")
         
         #get the resource
         resource = sys.argv[1].lower()
-        #get the amount
-        amount = int(sys.argv[2])
-        #return all
-        return resource, amount, None
+        
+        #if no amount provided
+        if len(arguments) == 2:
+            #just return the resource
+            return resource, None, None
+        else:
+            #get the amount
+            amount = int(sys.argv[2])
+            #return all
+            return resource, amount, None
 
 
 
@@ -75,11 +79,34 @@ def print_usage():
 
 
 def calculate_resource(resource, amount):
-    recipes = get_recipes(resource)
-    print("recipes: ", recipes)
-    return None
+    recipe_list = []
+    collect_recipe(recipe_list, resource, amount)
+    for recipe in recipe_list:
+        print("recipe: ", recipe)
+    
 
 
+def collect_recipe(recipe_list, resource, amount):
+    #lookup recipe
+    recipe, error = get_recipe(resource)
+    #check for error
+    if error != None:
+        #return error
+        return None, error
+    #recipe is available
+    if recipe != None:
+        #check if amount needs to be changed
+        if amount != None:
+            #change amount
+            recipe.adjust_amount(amount)
+
+        #add recipe to the list
+        recipe_list.append(recipe)
+
+        #for every input
+        for inner_resouce, inner_amount in recipe.inputs.items():
+            #collect the recipe
+            collect_recipe(recipe_list, inner_resouce, inner_amount) 
 
 #exectue main function
 main()
