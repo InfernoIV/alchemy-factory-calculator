@@ -127,7 +127,7 @@ malachite and crude shard,50,1,malachite,12,athanor,2,impure copper powder,6,cla
 malachite and crude shard,50,1,crude shard,12,athanor,2,impure copper powder,6,clay powder
 ruby,,1,ruby,30.9,cauldron,1,diamond,1,pure gold dust,1,resonant catalyst
 turquoise,,1,turquoise,12,assembler,2,healing potion,12,sand
-Topaz,,1,topaz,12,blender,1,crude shard,30,sulfuric acid
+topaz,,1,topaz,12,blender,1,crude shard,30,sulfuric acid
 pocket watch,,1,pocket watch,12,advanced assembler,2,steel gear,2,copper bearing,6,glass
 sapphire,,1,sapphire,38.2,cauldron,1,perfect diamond,1,world tree core,1,unstable catalyst
 lapis lazuli and shattered crystal,33,1,lapis lazuli,12,advanced athanor,1,impure silver powder,4,crude shard,4,gentian powder
@@ -169,8 +169,8 @@ mercury,,1,mercury,600,advanced shaper,100,turquoise,100,malachite,100,topaz,100
 luna,,1,luna,600,advanced shaper,75,steel ingot,75,bronze ingot,75,copper ingot,75,siler ingot,75,gold ingot,75,moon tear
 sol,,1,sol,300,arcane shaper,1,jupiter,1,saturn,1,mars,1,venus,1,mercury,1,luna,25,perfect diamond,5,eternal catalyst,5,world tree core
 
-Philosophers stone,,1,philosophers stone,60,cauldron,1,ruby,1,sapphire,1,emerald
+philosophers stone,,1,philosophers stone,60,cauldron,1,ruby,1,sapphire,1,emerald
 fairy dust,,1,fairy dust,4,arcane processor,1,chamomile powder,1,gentian powder,1,world tree leaf
-Oblivion essence,,1,oblivion essence,16,paradox crucible,1,gentian
+oblivion essence,,1,oblivion essence,16,paradox crucible,1,gentian
 vitality essence,,1,vitality essence,5.1,paradox crucible,1,oblivion essence
 star dust,,50,star dust,300,arcane processor,1,jupiter,1,saturn,1,mars

@@ -3,6 +3,8 @@ import sys
 from objects import recipe
 from data_lookup import get_recipe
 
+
+
 #main function
 def main():
     #handle the program
@@ -22,18 +24,14 @@ def main():
 def handle_program(arguments): 
     #check and convert the input
     resource, amount, error = process_input(arguments)
+    #if an error has occurred
     if error != None:
+        #return the error
         return error
-
-    #debug
-    #print("Input: ", amount, " * ", resource)
     #calculate resources
     calculate_resource(resource, amount)
-
+    #indicate no error
     return None
-
-    #not a valid command
-    return SyntaxError("No resource found!")
 
 
 
@@ -47,7 +45,6 @@ def process_input(arguments):
     if number_of_arguments < 1:
         #set error
         return None, None, SyntaxError("No arguments!")
-    
     #there are arguments
     else:
         #if the last argument is a digit
@@ -58,7 +55,6 @@ def process_input(arguments):
             resource = " ".join(arguments[:number_of_arguments-1]).lower()
             #return data
             return resource, amount, None
-        
         #only text
         else:
             #all text for resource
@@ -71,33 +67,36 @@ def process_input(arguments):
 #prints the usage of the program
 def print_usage():
     #print help message
-    print("Usage: python3 main.py \"<resource>\" <amount>")
+    print("Usage: python3 main.py <resource>")
+    #print help message (alt usage)
+    print("Usage: python3 main.py <resource> <amount>")
     #exit
     sys.exit(1)
-    #needed?
-    return
 
 
 
+#calculate the needed resources
 def calculate_resource(resource, amount):
-
-    #blank list
+    #list to fill with recipes
     recipe_list = []
-
     #collect all underlying recepies, calling itself multiple times to dig deeper
     collect_recipe(recipe_list, resource, amount)
-
     #print
     for depth, recipe in recipe_list:
+        #add extra markings to indicate depth
         message = ("-" * 2 * depth)
+        #if there is depth
         if depth > 0:
+            #add a space
             message += " " 
+        #add the description of the recipe
         message += recipe.get_small_description()
+        #print the message
         print(message)
-        pass
     
 
 
+#gather all recipes from the original recipes, drilling down within every recipe
 def collect_recipe(recipe_list, resource, amount, depth = 0):
     #lookup recipe
     recipe, by_products, error = get_recipe(resource)
@@ -111,10 +110,8 @@ def collect_recipe(recipe_list, resource, amount, depth = 0):
         if amount != None:
             #change amount
             recipe.adjust_amount(amount)
-
         #add recipe to the list
         recipe_list.append((depth,recipe))
-
         #handle by_products
         if by_products != None:
             for by_product in by_products:
@@ -124,17 +121,12 @@ def collect_recipe(recipe_list, resource, amount, depth = 0):
                 by_product.adjust_device_amount(recipe.device_amount)
                 #add to list
                 recipe_list.append((depth,by_product))
-
-
         #for every input
         for inner_resouce, inner_amount in recipe.inputs.items():
             #collect the recipe
             collect_recipe(recipe_list, inner_resouce, inner_amount, depth+1) 
 
 
-
-def print_table():
-    pass
 
 #exectue main function
 main()
