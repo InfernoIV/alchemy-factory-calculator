@@ -80,15 +80,25 @@ def print_usage():
 
 
 def calculate_resource(resource, amount):
+
+    #blank list
     recipe_list = []
+
+    #collect all underlying recepies, calling itself multiple times to dig deeper
     collect_recipe(recipe_list, resource, amount)
-    for recipe in recipe_list:
-        print(recipe)
+
+    #print
+    for depth, recipe in recipe_list:
+        message = ("-" * 2 * depth)
+        if depth > 0:
+            message += " " 
+        message += recipe.get_small_description()
+        print(message)
         pass
     
 
 
-def collect_recipe(recipe_list, resource, amount):
+def collect_recipe(recipe_list, resource, amount, depth = 0):
     #lookup recipe
     recipe, by_products, error = get_recipe(resource)
     #check for error
@@ -103,21 +113,23 @@ def collect_recipe(recipe_list, resource, amount):
             recipe.adjust_amount(amount)
 
         #add recipe to the list
-        recipe_list.append(recipe)
+        recipe_list.append((depth,recipe))
 
         #handle by_products
         if by_products != None:
             for by_product in by_products:
                 #remove the inputs (it's a by product)
                 by_product.inputs = {}
+                #set the device amount the same as the original
+                by_product.adjust_device_amount(recipe.device_amount)
                 #add to list
-                recipe_list.append(by_product)
+                recipe_list.append((depth,by_product))
 
 
         #for every input
         for inner_resouce, inner_amount in recipe.inputs.items():
             #collect the recipe
-            collect_recipe(recipe_list, inner_resouce, inner_amount) 
+            collect_recipe(recipe_list, inner_resouce, inner_amount, depth+1) 
 
 
 

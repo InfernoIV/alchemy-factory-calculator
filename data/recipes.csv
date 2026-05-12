@@ -9,7 +9,6 @@ coke and charcoal,,2,charcoal,3,athanor,6,charcoal
 coke,,1,coke,6,crucible,1,coal
 coke powder,,1,coke powder,12,grinder,1,coke
 black powder,,2,black powder,12,advanced blender,1,sulfur powder,12,charcoal powder,150,limewater
-blast potion,,1,blast potion,6,advanced blender,1,oblivion essence,2,black powder,40,Brandy
 panacea potion,,1,panacea potion,6,advanced blender,3,fertile catalyst,3,blast potion,12,aqua vitae
 
 stone,,150,stone,450,stone crusher,1,limestone
@@ -48,7 +47,6 @@ shattered crystal,,1,shattered crystal,3,refiner,2,dull shard
 crude crystal,,1,crude crystal,3,refiner,2,shattered crystal
 polished crystal,,1,polished crystal,3,refiner,2,crude crystal
 adamant,,1,adamant,3,refiner,2,polished crystal
-diamond,,1,diamond,3,refiner,2,adamant
 silver ingot,,1,silver ingot,16,crucible,1,silver powder
 gold ingot,,1,gold ingot,40,crucible,1,pure gold dust
 iron ingot 2,,1,iron ingot,6,crucible,1,iron sand
@@ -74,6 +72,7 @@ small wooden gear,,3,small wooden gear,12,processor,1,large wooden gear
 perfumed soap,,1,perfumed soap,8,blender,4,soap powder,30,lavender essential oil
 bandage,,1,bandage,10,assembler,1,linen,2,healing potion
 moonlit soap,,1,moonlit soap,10,blender,2,perfumed soap powder,5,moon tear
+linen thread,,1,linen thread,3,processor,3,flax fiber
 
 gloom fungus and plank,,40,gloom fungus,400,table saw,1,rotten log
 gloom fungus and plank,,160,plank,400,table saw,1,rotten log
@@ -168,7 +167,7 @@ mars,,1,mars,300,shaper,600,iron nails,300,steel gear,600,bronze rivet,300,coppe
 venus,,1,venus,1200,advanced shaper,200,healing potion,200,vitality potion,200,transformation potion,200,growth potion,200,blast potion,4000,sulfuric acid
 mercury,,1,mercury,600,advanced shaper,100,turquoise,100,malachite,100,topaz,100,obsidian,100,lapis lazuli,1000,quicksilver
 luna,,1,luna,600,advanced shaper,75,steel ingot,75,bronze ingot,75,copper ingot,75,siler ingot,75,gold ingot,75,moon tear
-sol,,1,sol,300,arcane shaper,1,jupiter,1,saturn,1,mars,1,venuc,1,mercury,1,luna,25,perfect diamond,5,eternal catalyst,5,world tree core
+sol,,1,sol,300,arcane shaper,1,jupiter,1,saturn,1,mars,1,venus,1,mercury,1,luna,25,perfect diamond,5,eternal catalyst,5,world tree core
 
 Philosophers stone,,1,philosophers stone,60,cauldron,1,ruby,1,sapphire,1,emerald
 fairy dust,,1,fairy dust,4,arcane processor,1,chamomile powder,1,gentian powder,1,world tree leaf

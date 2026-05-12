@@ -158,13 +158,14 @@ class recipe(object):
 
     #function that will print when converted to str
     def __repr__(self):
+        
         inputs = ""
         for resource, amount in self.inputs.items():
             if inputs != "":
                 inputs += ", "
             inputs += f"{amount:.2f} {resource}"
 
-        string = f"recipe '{self.name}' creates {self.amount:.2f} {self.output}"
+        string = f"recipe '{self.name}' creates {format_precision(self.amount)} {self.output}"
         if self.is_by_product:
             string += " as by-product"
 
@@ -180,6 +181,29 @@ class recipe(object):
     
 
 
+    def get_small_description(self):
+        inputs = ""
+        extention = f"({self.device_amount} {self.device_name})"
+
+        for resource, amount in self.inputs.items():
+            if inputs != "":
+                inputs += " + "
+            inputs += f"{format_precision(amount)} {resource}"
+        
+        if inputs != "":
+            inputs += " =>"
+
+        
+        elif self.is_by_product:
+            inputs = "    +"
+            extention = ""
+
+
+        #string = f"{inputs} {self.device_amount} {self.device_name} => {format_precision(self.amount)} {self.output}"
+        string = f"{inputs} {format_precision(self.amount)} {self.output} {extention}"
+        return string
+
+
     def adjust_amount(self, amount):
         #calculate the factor
         self.factor_amount = amount / self.amount
@@ -190,3 +214,21 @@ class recipe(object):
         #calculate the inputs
         for resource in self.inputs.keys():
             self.inputs[resource] *= self.factor_amount
+
+
+    #only used for by-products
+    def adjust_device_amount(self, device_amount):
+        #calculate the needed devices
+        self.device_amount = device_amount
+        #set the amount to the needed amount
+        self.amount *= self.device_amount
+        #calculate the inputs
+        #for resource in self.inputs.keys():
+        #    self.inputs[resource] *= device_amount
+
+def format_precision(number, max_precision = 2):
+    for i in range(max_precision+1):
+        if float(f"{number:.{i}f}") != 0:
+                return f"{number:.{i}f}"
+    #no matches found, return max precision
+    return f"{number:.{max_precision}f}"
