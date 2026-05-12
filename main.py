@@ -1,6 +1,6 @@
 #imports
 import sys
-from recipe import recipe_obj as recipe, get_recipe, calculate_recipe
+from recipe import get_recipe, get_recipe_list
 
 
 
@@ -32,26 +32,36 @@ def handle_program(arguments):
         #default to 1
         amount = 1
 
-    #print(f"command: {command}, resource: {resource}, amount: {amount}")
-    recipe, error = get_recipe("steel ingot")
-    #check for error
-    if error != None:
-        #return the error
-        return error
-    
-
-    print(f"recipe: {recipe}")
-    recipe.scale_to_time()
-    print(f"recipe: {recipe}")
+   
 
     #calculate resources
     #calculate_resource(resource, amount)
-    #if command in "get":
-    #    get_recipe(resource)
-    #if command in "calculate":
-    #    calculate_recipe(resource,amount)
+    if command in "test":
+        #print(f"command: {command}, resource: {resource}, amount: {amount}")
+        recipe, error = get_recipe("steel ingot")
+        #check for error
+        if error != None: return error            
+        #print
+        print(f"recipe: {recipe}")
 
-    #get_balance(resource, amount)
+    elif command in "get":
+        #get the recipe
+        recipe, error = get_recipe(resource)
+        #check for error
+        if error != None: return error
+        #print
+        print(recipe)
+
+    elif command in "list":
+        recipe_list = get_recipe_list(resource)
+        #print
+        for recipe in recipe_list:
+            print(recipe.description_fast())
+
+    elif command in "scale" or command in "calculate":
+    #   calculate_recipe(resource,amount)
+        pass
+
     #indicate no error
     return None
 

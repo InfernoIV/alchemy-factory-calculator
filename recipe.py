@@ -50,6 +50,30 @@ def get_recipe(resource):
     return None, "No recipe found!"
 
 
+def get_recipe_list(resource):
+    #list to store information into
+    recipe_list = []
+    #collect recipes
+    collect_recipes(recipe_list, resource)
+    #return the list
+    return recipe_list
+
+
+def collect_recipes(recipe_list, resource):
+    #get the recipe
+    recipe, error = get_recipe(resource)
+    #check error
+    if error != None: return
+    #if there is a recipe
+    if recipe != None:
+        #add recipe to the list
+        recipe_list.append(recipe)
+        #for each input
+        for input, input_amount in recipe.inputs.items():
+            #dig deeper
+            collect_recipes(recipe_list, input)
+        
+
 
 #calculates the recipe tree
 def calculate_recipe(resource, amount):
@@ -192,6 +216,8 @@ class recipe_obj(object):
         self.time = float(time)
         self.device = str(device)
 
+        #scale to 60s
+        self.scale_to_time()
 
 
     def __repr__(self):
@@ -214,3 +240,81 @@ class recipe_obj(object):
             #adjust the inputs
             self.outputs[output] = float(self.outputs[output]) * time_factor
     
+    
+    #returns a string with a description
+    def description(self):
+        #start with the device description
+        string = f"{self.device}"
+        #inputs
+        inputs = ""
+        #for each input
+        for input, amount in self.inputs.items():  
+            #if already input existing
+            if inputs != "":
+                #add comma
+                inputs += ", "
+            inputs += f"{format_precision(amount)} {input}"
+        #if there was an input
+        if inputs != "":
+            string += f" uses {inputs} to create "
+        else:
+            string += "creates "
+        #output string
+        outputs = ""
+        #for each input
+        for output, amount in self.outputs.items():  
+            #if already input existing
+            if outputs != "":
+                #add comma
+                outputs += ", "
+            #add output
+            outputs += f"{format_precision(amount)} {output}"
+        #complete the string
+        string += outputs
+        #return the string
+        return string
+    
+#returns a string with a description
+    def description_fast(self):
+        #start with the device description
+        string = ""
+        #inputs
+        inputs = ""
+        #for each input
+        for input, amount in self.inputs.items():  
+            #if already input existing
+            if inputs != "":
+                #add comma
+                inputs += ", "
+            inputs += f"{format_precision(amount)} {input}"
+        #if there was an input
+        if inputs != "":
+            string += f"{inputs} => "
+        string += f"{self.device} => "
+        
+        #output string
+        outputs = ""
+        #for each input
+        for output, amount in self.outputs.items():  
+            #if already input existing
+            if outputs != "":
+                #add comma
+                outputs += ", "
+            #add output
+            outputs += f"{format_precision(amount)} {output}"
+        #complete the string
+        string += outputs
+        #return the string
+        return string
+
+#function to format a number with a precision
+def format_precision(number, max_precision = 2):
+    #for 0 to max precision
+    for i in range(max_precision+1):
+        #check if this precision does not results into a 0 (which means the precision is correct)
+        if float(f"{number:.{i}f}") != 0:
+                #return this precision string
+                return f"{number:.{i}f}"
+    #no matches found, return max precision
+    #no matches found, return max precision string
+    return f"{number:.{max_precision}f}"
