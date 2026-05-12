@@ -1,6 +1,6 @@
 #constants to be imported by other scripts
 ___CSV_RECIPES____ = "data/recipes.csv"
-___CSV_CAULDRON____ = "data/cauldron.csv"
+___CSV_RECIPES_CAULDRON____ = "data/cauldron.csv"
 
 
 
