@@ -1,6 +1,6 @@
 #imports
 import sys
-from recipe import get_recipe, get_recipe_list, get_recipe_dict
+from recipe import get_recipe, get_recipe_list, get_recipe_dict, scale_recipe, calculate_recipe
 
 
 
@@ -71,10 +71,28 @@ def handle_program(arguments):
         for name, recipe in recipe_dict.items():
             #print
             print(recipe.description_fast())
-    #get scaled list of recipes
-    elif command in "scale" or command in "calculate":
-    #   calculate_recipe(resource,amount)
-        pass
+    #scale a recipe
+    elif command in "scale":
+        #scale recipe
+        recipe, error = scale_recipe(resource, amount)
+        #check for error
+        if error != None:
+            #return the error
+            return error
+        #print
+        print(recipe.description_fast())
+    #calculate the lists a recipe
+    elif command in "calculate":
+        #get the list of tuples of amount and recipes
+        calculated_list, error = calculate_recipe(resource,amount)
+        #check for error
+        if error != None:
+            #return the error
+            return error
+        for amount_of_recipe, recipe in calculated_list:
+            #print
+            pass
+
     #indicate no error
     return None
 

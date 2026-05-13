@@ -1,4 +1,4 @@
-import csv
+import csv, math
 from constants import ___CSV_RECIPES_CAULDRON____, ___CSV_RECIPES____,___PREFERRED_RECIPES___
 
 
@@ -116,6 +116,22 @@ def collect_recipe_dict(recipe_dict, resource):
     return None
 
 
+def scale_recipe(resource, amount):
+    #get the recipe
+    recipe, error = get_recipe(resource)
+    #check for error
+    if error != None:
+        #return error
+        return None, error
+    #if there is a recipe
+    if recipe != None:
+        #do stuff
+        recipe.scale_to_amount_resource(resource, amount)
+        #return the recipe
+        return recipe, None
+    #no recipe
+    return None, None
+
 
 #calculates the recipe tree
 def calculate_recipe(resource, amount):
@@ -125,7 +141,7 @@ def calculate_recipe(resource, amount):
     if recipe != None:
         #do stuff
         pass
-
+    
 
 
 #looks up the recipe and returns it (in the same format)
@@ -243,14 +259,19 @@ class recipe_obj(object):
     #name of the recipe
     name = ""
     #list of inputs of the recipe
-    inputs = []
+    inputs_base = []
     #list of outputs of the recipe
+    outputs_base = []
+    #keep track of scaled inputs
+    inputs = []
+    #keep track of scaled outputs
     outputs = []
     #time of the recipe
     time = 60
     #name of the used device
     device = ""
-
+    #amount of devices
+    device_amount = 1
 
 
     # The class "constructor" - It's actually an initializer 
@@ -258,9 +279,9 @@ class recipe_obj(object):
         #save name
         self.name = str(name)
         #save inputs
-        self.inputs = inputs
+        self.inputs_base = inputs
         #save outputs
-        self.outputs = outputs
+        self.outputs_base = outputs
         #save time
         self.time = float(time)
         #save device name
@@ -284,15 +305,45 @@ class recipe_obj(object):
         #set time
         self.time = time
         #for each input
-        for input in self.inputs:
+        for input in self.inputs_base:
             #adjust the inputs
-            self.inputs[input] = float(self.inputs[input]) * time_factor
+            self.inputs_base[input] = float(self.inputs_base[input]) * time_factor
         #for each input
-        for output in self.outputs:
+        for output in self.outputs_base:
             #adjust the inputs
-            self.outputs[output] = float(self.outputs[output]) * time_factor
-    
-    
+            self.outputs_base[output] = float(self.outputs_base[output]) * time_factor
+        #copy the values to scaled input
+        self.inputs = self.inputs_base
+        #copy the values to scaled output
+        self.outputs = self.outputs_base
+
+
+
+    #scale the number of devices to get the needed amount
+    def scale_to_amount_resource(self, resource, amount):
+        #get amount per device
+        base_amount = self.outputs[resource]
+        #calculate the needed device amount
+        device_amount = math.ceil(amount / base_amount)
+        #scale the recipe
+        self.scale_to_amount_devices(device_amount)
+
+
+
+    #scale the input and output to the number of devices
+    def scale_to_amount_devices(self, device_amount):
+        #amount of devices
+        self.device_amount = device_amount
+        #scale inputs
+        for input, input_amount in self.inputs_base.items():
+            #adjust the input
+            self.inputs[input] = device_amount * input_amount
+        #scale inputs
+        for output, output_amount in self.outputs_base.items():
+            #adjust the input
+            self.outputs[output] = device_amount * output_amount
+
+
 
     #returns a string with a description
     def description(self):
@@ -345,7 +396,7 @@ class recipe_obj(object):
         #if there was an input
         if inputs != "":
             string += f"{inputs} => "
-        string += f"{self.device} => "
+        string += f"{self.device_amount} {self.device} => "
         
         #output string
         outputs = ""
