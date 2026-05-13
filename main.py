@@ -1,6 +1,6 @@
 #imports
 import sys
-from recipe import get_recipe, get_recipe_list, get_recipe_dict, scale_recipe, calculate_recipe
+from recipe import get_recipe, get_recipe_list, get_recipe_dict, scale_recipe, calculate_recipe, get_usage
 
 
 
@@ -102,7 +102,24 @@ def handle_program(arguments):
             print(f"{spacer} {recipe.device_amount} {recipe.device} with recipe '{recipe_name}' to create {recipe.outputs}")
         print("")
         print(f"by-products: {by_products}")       
-
+    #find usage of a resource
+    elif command in "usage":
+        #get the usage of a resource
+        recipes, error = get_usage(resource)
+        #check error
+        if error != None:
+            #return error
+            return error
+        if len(recipes) > 0:
+            #start print
+            print(f"possible usage of '{resource}':")
+            #for every recipe
+            for recipe_name, recipe in recipes.items():
+                #print the recipes
+                print(recipe.description_fast())
+        else:
+            #start print
+            print(f"No possible usage of '{resource}'!")
     #indicate no error
     return None
 

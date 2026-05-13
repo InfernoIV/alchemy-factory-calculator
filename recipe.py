@@ -55,6 +55,40 @@ def get_recipe(resource):
     #no recipes found
     return None, None
 
+#function to receive a single recipe
+def get_usage(resource):
+    #create a list of recipes to return
+    recipe_dict = {}
+    #for the 3 possible inputs (cauldron recipes)
+    for i in range(1,4):
+        #create filter to search for
+        filter = {f"input-{i}-resource": resource}
+        #search for cauldron recipes
+        cauldron_recipes, error = lookup_recipe(___CSV_RECIPES_CAULDRON____, filter)
+        #check for errors
+        if error != None:
+            #return the error
+            return None, error
+        #for every recipe found
+        for recipe in cauldron_recipes:
+            #add (or replace) to recipe dict
+            recipe_dict[recipe.name] = recipe    
+    #for the 9 possible inputs (normal recipes)
+    for i in range(1,10):
+        #create filter to search for
+        filter = {f"input-{i}-resource": resource}
+        #get the normal recipes
+        recipes, error = lookup_recipe(___CSV_RECIPES____, filter)
+        #if error
+        if error != None:
+            #return the error
+            return None, error
+        #for every recipe
+        for recipe in recipes:
+            #add (or replace) to recipe dict
+            recipe_dict[recipe.name] = recipe
+    #no recipes found
+    return recipe_dict, None
 
 
 def get_recipe_list(resource):
@@ -291,10 +325,18 @@ def lookup_recipe(filename, filter):
                 flag_match = True
                 #for all filters
                 for field, contains in filter.items():
-                    #check if not matching
-                    if contains.lower() != row[field].lower():
+                    if row[field] == None:
                         #no match!
                         flag_match = False
+                        #stop searching
+                        break
+                    else:
+                        #check if not matching
+                        if contains.lower() != row[field].lower():
+                            #no match!
+                            flag_match = False
+                            #stop searching
+                            break
                 #if still valid
                 if flag_match:
                     #check device name to determine if it is a cauldron recipe
