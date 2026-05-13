@@ -1,6 +1,6 @@
 #imports
 import sys
-from recipe import get_recipe, get_recipe_list
+from recipe import get_recipe, get_recipe_list, get_recipe_dict
 
 
 
@@ -43,7 +43,7 @@ def handle_program(arguments):
         if error != None: return error            
         #print
         print(f"recipe: {recipe}")
-
+    #get a single recipe
     elif command in "get":
         #get the recipe
         recipe, error = get_recipe(resource)
@@ -51,17 +51,30 @@ def handle_program(arguments):
         if error != None: return error
         #print
         print(recipe)
-
+    #list all (including duplicate) recipes needed for this resource
     elif command in "list":
+        #get list of all recipes needed for this resource
         recipe_list = get_recipe_list(resource)
-        #print
+        #for each recipe
         for recipe in recipe_list:
+            #print
             print(recipe.description_fast())
-
+    #list all recipes (no duplicates) needed for this resource
+    elif command in "dictionary":
+        #get dict of all recipes needed for this resource
+        recipe_dict, error = get_recipe_dict(resource)
+        #check for error
+        if error != None:
+            #return the error
+            return error
+        #for each recipe
+        for name, recipe in recipe_dict.items():
+            #print
+            print(recipe.description_fast())
+    #get scaled list of recipes
     elif command in "scale" or command in "calculate":
     #   calculate_recipe(resource,amount)
         pass
-
     #indicate no error
     return None
 
@@ -111,3 +124,5 @@ def print_usage():
 
 #exectue main function
 main()
+
+

@@ -34,6 +34,10 @@ def get_recipe(resource):
             return None, error
         #if any recipe found
         if recipes != None:
+            #if the list is empty
+            if len(recipes) == 0:
+                #no recipes found
+                return None, None
             #if only a single recipe found
             if len(recipes) == 1:
                 #return this recipe
@@ -46,20 +50,24 @@ def get_recipe(resource):
                     if recipe.name in ___PREFERRED_RECIPES___:
                         #return the recipe
                         return recipe, None
+                #multiple recipes found
+                return None, f"Multiple recipes found, but no preffered recipe! '{recipes}'"
     #no recipes found
-    return None, "No recipe found!"
+    return None, None
+
 
 
 def get_recipe_list(resource):
     #list to store information into
     recipe_list = []
     #collect recipes
-    collect_recipes(recipe_list, resource)
+    collect_recipe_list(recipe_list, resource)
     #return the list
     return recipe_list
 
 
-def collect_recipes(recipe_list, resource):
+
+def collect_recipe_list(recipe_list, resource):
     #get the recipe
     recipe, error = get_recipe(resource)
     #check error
@@ -71,8 +79,42 @@ def collect_recipes(recipe_list, resource):
         #for each input
         for input, input_amount in recipe.inputs.items():
             #dig deeper
-            collect_recipes(recipe_list, input)
+            collect_recipe_list(recipe_list, input)
         
+
+
+def get_recipe_dict(resource):
+    #list to store information into
+    recipe_dict = {}
+    #collect recipes
+    error = collect_recipe_dict(recipe_dict, resource)
+    #return the list
+    return recipe_dict, error
+
+
+
+def collect_recipe_dict(recipe_dict, resource):
+    #get the recipe
+    recipe, error = get_recipe(resource)
+    #check error
+    if error != None: 
+        #return the rror
+        return error
+    #if there is a recipe
+    if recipe != None:
+        #add recipe to the list
+        recipe_dict[recipe.name] = recipe
+        #for each input
+        for input, input_amount in recipe.inputs.items():
+            #dig deeper
+            error = collect_recipe_dict(recipe_dict, input)
+            #check for error
+            if error != None:
+                #return error
+                return error
+    #no recipe found (which can happen)
+    return None
+
 
 
 #calculates the recipe tree
@@ -88,7 +130,6 @@ def calculate_recipe(resource, amount):
 
 #looks up the recipe and returns it (in the same format)
 def lookup_recipe(filename, filter):
-    #print(f"filter: '{filter}'")
     #list of recipes
     matching_recipes = []
     #use the csv as data source
@@ -121,7 +162,6 @@ def lookup_recipe(filename, filter):
                     time = 60
                     #output resource, for easy reference
                     output_resource = row["output-resource"]
-
                     #if cauldron recipe
                     if device == None:
                         #set device to cauldron
@@ -135,15 +175,13 @@ def lookup_recipe(filename, filter):
                             #already an entry
                             if inputs.get(resource) != None:
                                 #add the amount to the existing amount
-                                inputs[resource] += amount
+                                inputs[resource] += float(amount)
                             #no entry
                             else:
                                 #add data to inputs
-                                inputs[resource] = amount
+                                inputs[resource] = float(amount)
                         #add the output
-                        outputs[output_resource] = (1, amount)
-                            
-
+                        outputs[output_resource] = float(amount)
                     #normal recipe
                     else:
                         #get the name
@@ -177,6 +215,7 @@ def lookup_recipe(filename, filter):
                                             #set to 100%
                                             chance = 1
                                         else:
+                                            #set the change to a float
                                             chance = float(chance)/float(100)
                                         #get the amount
                                         amount = float(row["output-amount"])
@@ -201,26 +240,39 @@ def lookup_recipe(filename, filter):
 
 #base recipe object
 class recipe_obj(object):
-    
+    #name of the recipe
     name = ""
+    #list of inputs of the recipe
     inputs = []
+    #list of outputs of the recipe
     outputs = []
+    #time of the recipe
     time = 60
+    #name of the used device
     device = ""
+
+
 
     # The class "constructor" - It's actually an initializer 
     def __init__(self, name, inputs, outputs, time, device):
+        #save name
         self.name = str(name)
+        #save inputs
         self.inputs = inputs
+        #save outputs
         self.outputs = outputs
+        #save time
         self.time = float(time)
+        #save device name
         self.device = str(device)
-
         #scale to 60s
         self.scale_to_time()
 
 
+
+    #function that is returned 
     def __repr__(self):
+        #return self as dictionary
         return f"recipe: '{str(self.__dict__)}'"
     
 
@@ -241,6 +293,7 @@ class recipe_obj(object):
             self.outputs[output] = float(self.outputs[output]) * time_factor
     
     
+
     #returns a string with a description
     def description(self):
         #start with the device description
@@ -274,6 +327,8 @@ class recipe_obj(object):
         #return the string
         return string
     
+
+
 #returns a string with a description
     def description_fast(self):
         #start with the device description
@@ -307,6 +362,8 @@ class recipe_obj(object):
         #return the string
         return string
 
+
+
 #function to format a number with a precision
 def format_precision(number, max_precision = 2):
     #for 0 to max precision
@@ -318,3 +375,5 @@ def format_precision(number, max_precision = 2):
     #no matches found, return max precision
     #no matches found, return max precision string
     return f"{number:.{max_precision}f}"
+
+
