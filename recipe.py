@@ -173,9 +173,25 @@ def calculate_recipe(resource, amount):
     error = calculate_dependency(recipe_dict, resource_need, resource_extra)
     #check for error
     if error != None:
-        return None, None, None, error
+        return None, None, error
+    #create list of by-products to return
+    by_products = {}
+    #create a list of inputs
+    consumed_products = {}
+    #for each recipe
+    for recipe_name, recipe in recipe_dict.items():
+        #for every input (e.g. consumer)
+        for input, input_amount in recipe.inputs.items():
+            #add it to the list (only the name is needed)
+            consumed_products[input] = input_amount
+    #for every extra resource
+    for extra, extra_amount in resource_extra.items():
+        #if it is an actual by-product
+        if extra not in consumed_products:
+            #add to by-product list
+            by_products[extra] = extra_amount
     #return the recipes
-    return recipe_dict, resource_need, resource_extra, None
+    return recipe_dict, resource_extra, by_products, None
 
 
 
