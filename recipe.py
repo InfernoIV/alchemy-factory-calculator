@@ -217,17 +217,17 @@ def calculate_dependency(recipe_dict, resource_need, resource_extra):
                     #we create more than we need
                     elif float(output_amount) > need_amount:
                         #remove the need
-                        resource_need.pop(resource)
+                        resource_need.pop(output)
                         #add the leftover to the by-product
                         left_over = float(output_amount) - need_amount
                         #if entry exists
-                        if resource in resource_extra:
+                        if output in resource_extra:
                             #add to this entry
-                            resource_extra[resource] += left_over
+                            resource_extra[output] += left_over
                         #no entry exists
                         else:
                             #create the entry
-                            resource_extra[resource] = left_over
+                            resource_extra[output] = left_over
                     #we create less than the need (shouldn't happen?)
                     else:
                         #reduce the need
