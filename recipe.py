@@ -67,9 +67,18 @@ def get_recipe_list(resource):
 
 
 
-def collect_recipe_list(recipe_list, resource):
-    #get the recipe
-    recipe, error = get_recipe(resource)
+def collect_recipe_list(recipe_list, resource, amount=0):
+    #recipe variable
+    recipe = None
+    #error variable
+    error = None
+    #check if we need to scale
+    if amount == 0:
+        #get the recipe
+        recipe, error = get_recipe(resource)
+    else:
+        #get a scaled recipe
+        recipe, error = scale_recipe(resource, amount)
     #check error
     if error != None: return
     #if there is a recipe
@@ -78,8 +87,14 @@ def collect_recipe_list(recipe_list, resource):
         recipe_list.append(recipe)
         #for each input
         for input, input_amount in recipe.inputs.items():
-            #dig deeper
-            collect_recipe_list(recipe_list, input)
+            #unscaled
+            if amount == 0:
+                #dig deeper
+                collect_recipe_list(recipe_list, input)
+            #scaled
+            else:
+                #dig deeper
+                collect_recipe_list(recipe_list, input, input_amount)
         
 
 
@@ -93,9 +108,18 @@ def get_recipe_dict(resource):
 
 
 
-def collect_recipe_dict(recipe_dict, resource):
-    #get the recipe
-    recipe, error = get_recipe(resource)
+def collect_recipe_dict(recipe_dict, resource, amount=0):
+    #recipe variable
+    recipe = None
+    #error variable
+    error = None
+    #check if we need to scale
+    if amount == 0:
+        #get the recipe
+        recipe, error = get_recipe(resource)
+    else:
+        #get a scaled recipe
+        recipe, error = scale_recipe(resource, amount)
     #check error
     if error != None: 
         #return the rror
@@ -106,14 +130,17 @@ def collect_recipe_dict(recipe_dict, resource):
         recipe_dict[recipe.name] = recipe
         #for each input
         for input, input_amount in recipe.inputs.items():
-            #dig deeper
-            error = collect_recipe_dict(recipe_dict, input)
-            #check for error
-            if error != None:
-                #return error
-                return error
+            #unscaled
+            if amount == 0:
+                #dig deeper
+                collect_recipe_list(recipe_dict, input)
+            #scaled
+            else:
+                #dig deeper
+                collect_recipe_list(recipe_dict, input, input_amount)
     #no recipe found (which can happen)
     return None
+
 
 
 def scale_recipe(resource, amount):
@@ -133,15 +160,16 @@ def scale_recipe(resource, amount):
     return None, None
 
 
+
 #calculates the recipe tree
 def calculate_recipe(resource, amount):
-    #get the recipe
-    recipe = get_recipe(resource)
-    #if there is a recipe
-    if recipe != None:
-        #do stuff
-        pass
-    
+    #list to store information into
+    recipe_list = []    
+    #collect recipes
+    collect_recipe_list(recipe_list, resource, amount)
+    #return the list
+    return recipe_list
+
 
 
 #looks up the recipe and returns it (in the same format)

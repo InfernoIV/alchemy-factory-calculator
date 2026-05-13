@@ -84,14 +84,10 @@ def handle_program(arguments):
     #calculate the lists a recipe
     elif command in "calculate":
         #get the list of tuples of amount and recipes
-        calculated_list, error = calculate_recipe(resource,amount)
-        #check for error
-        if error != None:
-            #return the error
-            return error
-        for amount_of_recipe, recipe in calculated_list:
+        calculated_list = calculate_recipe(resource,amount)
+        for recipe in calculated_list:
             #print
-            pass
+            print(recipe.description_fast())
 
     #indicate no error
     return None
