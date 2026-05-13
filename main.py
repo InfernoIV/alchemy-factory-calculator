@@ -87,16 +87,21 @@ def handle_program(arguments):
     #calculate the lists a recipe
     elif command in "calculate":
         #get the list of tuples of amount and recipes
-        calculated_dict, error = calculate_recipe(resource,amount)
+        calculated_dict, resource_need, resource_extra, error = calculate_recipe(resource,amount)
         #check for error
         if error != None:
             #return the error
             return error
+        #start message
+        print(f"{amount} {resource} requires: ")
         #for each recipe
         for recipe_name, recipe in calculated_dict.items():
+            #create a spacer according to the depth
+            spacer = "--" * recipe.depth
             #print
-            print(recipe.description_fast())
-
+            print(f"{spacer} {recipe.device_amount} {recipe.device} with recipe '{recipe_name}'")
+        print("")
+        print(f"by-products: {resource_extra}")       
     #indicate no error
     return None
 

@@ -173,27 +173,27 @@ def calculate_recipe(resource, amount):
     error = calculate_dependency(recipe_dict, resource_need, resource_extra)
     #check for error
     if error != None:
-        return None, error
+        return None, None, None, error
     #return the recipes
-    return recipe_dict, None
+    return recipe_dict, resource_need, resource_extra, None
 
 
 
 #calculate the depency recipes
-def calculate_dependency(recipe_dict, resource_need, resource_extra):
+def calculate_dependency(recipe_dict, resource_need, resource_extra, depth=0):
     #for the leftover need
     for resource, amount in dict(resource_need).items():
         #get the recipe
-        recipe, error = scale_recipe(resource, float(amount))        
-        #print(f"recipe: '{recipe}'")                 
+        recipe, error = scale_recipe(resource, float(amount))                      
         #check error
         if error != None:
             #return the error
             return error
         if recipe != None:
+            #add the depth
+            recipe.depth = depth
             #add to the dictionary
             recipe_dict[recipe.name] = recipe
-            
             #for every needed input
             for input, input_amount in recipe.inputs.items():
                 #if there already is a need
@@ -253,7 +253,7 @@ def calculate_dependency(recipe_dict, resource_need, resource_extra):
     #if there is still a resource need
     if len(resource_need) > 0:
         #go deeper
-        calculate_dependency(recipe_dict, resource_need, resource_extra)
+        calculate_dependency(recipe_dict, resource_need, resource_extra, depth+1)
     #return no error
     return None
 
@@ -284,7 +284,7 @@ def lookup_recipe(filename, filter):
                     #check device name to determine if it is a cauldron recipe
                     device = row.get("device")
                     #default to cauldron recipe
-                    recipe_name = f"{row["output-resource"]} (Cauldron)"
+                    recipe_name = f"{row["output-resource"]} (cauldron)"
                     #inputs
                     inputs = {}
                     #outputs
@@ -387,10 +387,11 @@ class recipe_obj(object):
     device = ""
     #amount of devices
     device_amount = 1
-
+    #depth, for reporting purposes
+    depth = 0
 
     # The class "constructor" - It's actually an initializer 
-    def __init__(self, name, inputs, outputs, time, device):
+    def __init__(self, name, inputs, outputs, time, device, depth=0):
         #save name
         self.name = str(name)
         #save inputs
@@ -403,7 +404,8 @@ class recipe_obj(object):
         self.device = str(device)
         #scale to 60s
         self.scale_to_time()
-
+        #set depth
+        self.depth = depth
 
 
     #function that is returned 
