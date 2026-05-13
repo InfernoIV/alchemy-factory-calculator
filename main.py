@@ -31,9 +31,6 @@ def handle_program(arguments):
     if amount == None:
         #default to 1
         amount = 1
-
-   
-
     #calculate resources
     #calculate_resource(resource, amount)
     if command in "test":
@@ -79,13 +76,24 @@ def handle_program(arguments):
         if error != None:
             #return the error
             return error
-        #print
-        print(recipe.description_fast())
+        #if we have a recipe
+        if recipe != None:
+            #print
+            print(recipe.description_fast())
+        #if there is no recipe
+        else:
+            #debug
+            print(f"No recipe found for '{amount}' '{resource}'")
     #calculate the lists a recipe
     elif command in "calculate":
         #get the list of tuples of amount and recipes
-        calculated_list = calculate_recipe(resource,amount)
-        for recipe in calculated_list:
+        calculated_dict, error = calculate_recipe(resource,amount)
+        #check for error
+        if error != None:
+            #return the error
+            return error
+        #for each recipe
+        for recipe_name, recipe in calculated_dict.items():
             #print
             print(recipe.description_fast())
 

@@ -163,12 +163,99 @@ def scale_recipe(resource, amount):
 
 #calculates the recipe tree
 def calculate_recipe(resource, amount):
-    #list to store information into
-    recipe_list = []    
-    #collect recipes
-    collect_recipe_list(recipe_list, resource, amount)
-    #return the list
-    return recipe_list
+    #recipe dictionary that is used
+    recipe_dict = {}
+    #create dictionary for the need
+    resource_need = {resource: float(amount)}
+    #create dictionary for the output
+    resource_extra = {}
+    #start the chain
+    error = calculate_dependency(recipe_dict, resource_need, resource_extra)
+    #check for error
+    if error != None:
+        return None, error
+    #return the recipes
+    return recipe_dict, None
+
+
+
+#calculate the depency recipes
+def calculate_dependency(recipe_dict, resource_need, resource_extra):
+    #for the leftover need
+    for resource, amount in dict(resource_need).items():
+        #get the recipe
+        recipe, error = scale_recipe(resource, float(amount))        
+        #print(f"recipe: '{recipe}'")                 
+        #check error
+        if error != None:
+            #return the error
+            return error
+        if recipe != None:
+            #add to the dictionary
+            recipe_dict[recipe.name] = recipe
+            
+            #for every needed input
+            for input, input_amount in recipe.inputs.items():
+                #if there already is a need
+                if input in resource_need:
+                    #add to the existing
+                    resource_need[input] += float(input_amount)
+                #if there is not yet a need
+                else:
+                    #add a new entry
+                    resource_need[input] = float(input_amount)
+            #for every output
+            for output, output_amount in recipe.outputs.items():
+                #if we have a need for this resource
+                if output in resource_need:
+                    #get the extra amount
+                    need_amount = resource_need[output]           
+                    #check if we create exactly the need
+                    if float(output_amount) == need_amount:
+                        #remove the need
+                        resource_need.pop(resource)
+                    #we create more than we need
+                    elif float(output_amount) > need_amount:
+                        #remove the need
+                        resource_need.pop(resource)
+                        #add the leftover to the by-product
+                        left_over = float(output_amount) - need_amount
+                        #if entry exists
+                        if resource in resource_extra:
+                            #add to this entry
+                            resource_extra[resource] += left_over
+                        #no entry exists
+                        else:
+                            #create the entry
+                            resource_extra[resource] = left_over
+                    #we create less than the need (shouldn't happen?)
+                    else:
+                        #reduce the need
+                        resource_need[output] -= output_amount
+                        #return an error for now
+                        #return f"Too little production! '{recipe.outputs}' '{resource_need}'"
+                #otherwise this is a by-product
+                else:
+                    #if an entry already exists
+                    if output in resource_extra:
+                        #add to this entry
+                        resource_extra[output] += output_amount
+                    #entry does not exist
+                    else:
+                        #create the entry
+                        resource_extra[output] = output_amount
+        #no recipe found
+        else:
+            #debug
+            #print(f"no recipe found for : '{resource}', removing")
+            #remove the resource from the list to prevent infinite loops
+            resource_need.pop(resource)
+    #if there is still a resource need
+    if len(resource_need) > 0:
+        #go deeper
+        calculate_dependency(recipe_dict, resource_need, resource_extra)
+    #return no error
+    return None
 
 
 
