@@ -207,7 +207,7 @@ def calculate_recipe(resource, amount):
     error = calculate_dependency(recipe_dict, resource_need, resource_extra)
     #check for error
     if error != None:
-        return None, None, error
+        return None, None, None, error
     #create list of by-products to return
     by_products = {}
     #create a list of inputs
@@ -297,7 +297,7 @@ def calculate_dependency(recipe_dict, resource_need, resource_extra, depth=0):
         #no recipe found
         else:
             #debug
-            #print(f"no recipe found for : '{resource}', removing")
+            print(f"no recipe found for : '{resource}', removing")
             #remove the resource from the list to prevent infinite loops
             resource_need.pop(resource)
     #if there is still a resource need

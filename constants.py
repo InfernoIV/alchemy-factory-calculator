@@ -10,12 +10,14 @@ ___PREFERRED_RECIPES___ = [
     "iron ingot",
     "coal",
     "copper ingot",
+    "iron sand",
     "sand",
     "stone",
     "plank",
     "crude shard",
     "adamant",
     "shattered crystal",
+    "copper powder and impure copper powder",
 
     # to check what is best for gold dust
     # "pure gold dust",
@@ -31,5 +33,5 @@ ___PREFERRED_RECIPES___ = [
     #"emerald",
     
     #or:
-    "stone and coal",
+    #"stone and coal",
 ]
