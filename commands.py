@@ -132,13 +132,17 @@ def cauldron(resource, amount):
          print(f"mapped '{resource}' into '{target_resource}'")
     
     #get the actual recipe
-    target_min, target_max, error = get_cauldron_target(target_resource)
+    cauldron_obj, error = get_cauldron_target(target_resource)
     #check for error
     if error != None:
          #return the error
          return error
     #show the numbers
-    print(f"Cauldron target '{target_resource}' is between '{target_min}' and '{target_max}'")
+    cauldron_obj.describe_target()
+    #calculate the options
+    cauldron_obj.calc_possiblities()
+    #show the options:
+    cauldron_obj.describe_possiblities()
 
 
 
