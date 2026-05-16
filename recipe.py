@@ -55,6 +55,8 @@ def get_recipe(resource):
     #no recipes found
     return None, None
 
+
+
 #function to receive a single recipe
 def get_usage(resource):
     #create a list of recipes to return
@@ -89,6 +91,7 @@ def get_usage(resource):
             recipe_dict[recipe.name] = recipe
     #no recipes found
     return recipe_dict, None
+
 
 
 def get_recipe_list(resource):
@@ -351,6 +354,7 @@ def lookup_recipe(filename, filter):
                     time = 60
                     #output resource, for easy reference
                     output_resource = row["output-resource"]
+                    
                     #if cauldron recipe
                     if device == None:
                         #set device to cauldron
@@ -361,16 +365,36 @@ def lookup_recipe(filename, filter):
                         for i in range(1,4):
                             #get the resource name
                             resource = row[f"input-{i}-resource"]
-                            #already an entry
-                            if inputs.get(resource) != None:
-                                #add the amount to the existing amount
-                                inputs[resource] += float(amount)
-                            #no entry
+                            #if advanced recipe (only 2 inputs)
+                            if resource == None:
+                                #debug
+                                #print(f"Advanced cauldron recipe found: {row}")
+                                #change recipe name
+                                recipe_name = f"{row["output-resource"]} (a. cauldron)"
+                                #set device to advanced cauldron
+                                device = "advanced cauldron"
+
+                            #there is data to process
                             else:
-                                #add data to inputs
-                                inputs[resource] = float(amount)
+                                #already an entry
+                                if inputs.get(resource) != None:
+                                    #add the amount to the existing amount
+                                    inputs[resource] += float(amount)
+                                #no entry
+                                else:
+                                    #add data to inputs
+                                    inputs[resource] = float(amount)
                         #add the output
                         outputs[output_resource] = float(amount)
+                        #create recipe object
+                        recipe = recipe_obj(recipe_name, inputs, outputs, time, device)
+                        #print(f"recipe: {recipe}")
+                        #add recipe to the list
+                        matching_recipes.append(recipe)
+                        #print(f"matching_recipes: {matching_recipes}")
+                        #return the list of matching recipes
+                        return matching_recipes, None 
+                
                     #normal recipe
                     else:
                         #get the name
@@ -416,8 +440,12 @@ def lookup_recipe(filename, filter):
                                 return None, 'file {}, line {}: {}'.format(filename, reader.line_num, e)
                     #create recipe object
                     recipe = recipe_obj(recipe_name, inputs, outputs, time, device)
+                    #print(f"recipe: {recipe}")
                     #add recipe to the list
                     matching_recipes.append(recipe)
+                    #print(f"matching_recipes: {matching_recipes}")
+                    #return the list of matching recipes
+                    return matching_recipes, None 
         #if exception
         except csv.Error as e:
             #return the error

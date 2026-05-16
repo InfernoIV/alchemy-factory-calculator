@@ -1,6 +1,6 @@
 #imports
 import sys
-from recipe import get_recipe, get_recipe_list, get_recipe_dict, scale_recipe, calculate_recipe, get_usage
+from commands import * #test, list, get, usage, dictionary, scale, calculate
 
 
 
@@ -11,11 +11,9 @@ def main():
     #if there is an error
     if error != None:
         #print the error
-        print(f"Error: {error}")
+        print(f"Error: {error}, args: '{sys.argv}'")
         #print usage
         print_usage()
-    #stop function
-    return
 
 
 
@@ -31,112 +29,15 @@ def handle_program(arguments):
     if amount == None:
         #default to 0
         amount = 0
-    #calculate resources
-    #calculate_resource(resource, amount)
-    if command in "test":
-        #print(f"command: {command}, resource: {resource}, amount: {amount}")
-        recipe, error = get_recipe("steel ingot")
-        #check for error
-        if error != None: return error            
-        #print
-        print(f"recipe: {recipe}")
-    #get a single recipe
-    elif command in "get":
-        #get the recipe
-        recipe, error = get_recipe(resource)
-        #check for error
-        if error != None: return error
-        #print
-        print(recipe)
-    #list all (including duplicate) recipes needed for this resource
-    elif command in "list":
-        #get list of all recipes needed for this resource
-        recipe_list = get_recipe_list(resource)
-        #for each recipe
-        for recipe in recipe_list:
-            #print
-            print(recipe.description_fast())
-    #list all recipes (no duplicates) needed for this resource
-    elif command in "dictionary":
-        #get dict of all recipes needed for this resource
-        recipe_dict, error = get_recipe_dict(resource)
-        #check for error
-        if error != None:
-            #return the error
-            return error
-        #for each recipe
-        for name, recipe in recipe_dict.items():
-            #print
-            print(recipe.description_fast())
-
-
-    #scale a recipe
-    elif command in "scale":
-        #scale recipe
-        recipe, error = scale_recipe(resource, amount)
-        #check for error
-        if error != None:
-            #return the error
-            return error
-        #if we have a recipe
-        if recipe != None:
-            #print
-            print(recipe.description_fast())
-        #if there is no recipe
-        else:
-            #debug
-            print(f"No recipe found for '{amount}' '{resource}'")
-
-
-    #calculate the lists a recipe
-    elif command in "calculate":
-        #if no amount set
-        if amount == 0:
-            #get the base recipe set
-            recipe, error = get_recipe(resource)
-            #check for errors
-            if error != None:
-                #return
-                return error
-            #set the amount
-            amount = recipe.outputs[resource]
-        #get the list of tuples of amount and recipes
-        calculated_dict, resource_extra, by_products, error = calculate_recipe(resource,amount)
-        #check for error
-        if error != None:
-            #return the error
-            return error
-        #start message
-        print(f"{amount} {resource} requires: ")
-        #for each recipe
-        for recipe_name, recipe in calculated_dict.items():
-            #create a spacer according to the depth
-            spacer = "--" * recipe.depth
-            #print
-            print(f"{spacer} {recipe.device_amount} {recipe.device} with recipe '{recipe_name}' to create {recipe.outputs}")
-        print("")
-        print(f"by-products: {by_products}")       
-    #find usage of a resource
-    elif command in "usage":
-        #get the usage of a resource
-        recipes, error = get_usage(resource)
-        #check error
-        if error != None:
-            #return error
-            return error
-        if len(recipes) > 0:
-            #start print
-            print(f"possible usage of '{resource}':")
-            #for every recipe
-            for recipe_name, recipe in recipes.items():
-                #print the recipes
-                print(recipe.description_fast())
-        else:
-            #start print
-            print(f"No possible usage of '{resource}'!")
-    #indicate no error
-    return None
-
+    #check all commands
+    for command_entry in commands.keys():
+        #if (fuzzy) match
+        if command in command_entry:
+            #run that command
+            return commands[command_entry](resource, amount)
+    #print error
+    return f"command not found! {command}, {resource}, {amount}"
+    
 
 
 #function that checks the input arguments
@@ -176,6 +77,8 @@ def print_usage():
     print("Usage: python3 main.py <command> <resource>")
     #print help message (alt usage)
     print("Usage: python3 main.py <command> <resource> <amount>")
+    #print commands
+    print(f"Available commands: {', '.join(commands.keys())}")
     #exit
     sys.exit(1)
 
