@@ -120,23 +120,25 @@ def usage(resource, amount):
 
 
 def cauldron(resource, amount):
-    #get the cauldron target value
-    target_resource, target_value, error = check_cauldron_target(resource)
+    #check for the name
+    target_resource, error = get_cauldron_name(resource)
     #check for error
     if error != None:
          #return the error
          return error
-    #check if reou
+    #check if resource name has changed
     if resource != target_resource:
          #indicate mapped input 
          print(f"mapped '{resource}' into '{target_resource}'")
-    #if no cauldron recipe possible
-    if target_value == 0:
-        #indicate it is impossible
-        print(f"Cauldron target '{target_resource}' is not possible!")    
-    #cauldron recipe possible
-    else:
-        print(f"Cauldron target '{target_resource}' is {target_value}")
+    
+    #get the actual recipe
+    target_min, target_max, error = get_cauldron_target(target_resource)
+    #check for error
+    if error != None:
+         #return the error
+         return error
+    #show the numbers
+    print(f"Cauldron target '{target_resource}' is between '{target_min}' and '{target_max}'")
 
 
 
