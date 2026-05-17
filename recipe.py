@@ -1,6 +1,6 @@
 import csv, math
 from constants import ___CSV_RECIPES_CAULDRON____, ___CSV_RECIPES____,___PREFERRED_RECIPES___
-
+from utility import format_precision
 
 
 #function to receive a single recipe
@@ -617,17 +617,5 @@ class recipe_obj(object):
         return string
 
 
-
-#function to format a number with a precision
-def format_precision(number, max_precision = 2):
-    #for 0 to max precision
-    for i in range(max_precision+1):
-        #check if this precision does not results into a 0 (which means the precision is correct)
-        if float(f"{number:.{i}f}") != 0:
-                #return this precision string
-                return f"{number:.{i}f}"
-    #no matches found, return max precision
-    #no matches found, return max precision string
-    return f"{number:.{max_precision}f}"
 
 

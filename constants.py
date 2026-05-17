@@ -36,11 +36,17 @@ ___PREFERRED_RECIPES___ = [
     #"stone and coal",
 ]
 
-___PREFERRED_RESOURCES___ = [
-    "flax", "flax fiber",
-    "sage", "sage powder",
-    "redcurrant",
-    "lavender",
-    "chamomile", "chamomile powder",
-    "gentian", "gentian powder", "gentian nectar",
-]
+#list of preferred resources, and their fertilizer cost @ 60 / min
+___PREFERRED_RESOURCES___ = {
+    "flax":0.01, "flax fiber":0.01,
+    "sage":0.01, "sage powder":0.01,
+    "redcurrant":0.04,
+    "lavender":0.65,
+    "chamomile":0.22, "chamomile powder":0.22,
+    "gentian":1.8, "gentian powder":1.8, "gentian nectar":1.8, #1/2 due to split output, but 2 needed for 60 output 
+    "world tree leaf":18, 
+}
+
+
+___SHOW_AMOUNT_OF_CAULDRON_POSSIBILITIES___ = 100
+

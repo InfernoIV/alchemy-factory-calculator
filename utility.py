@@ -26,3 +26,16 @@ def print_variables(*variables):
     #print(string)
     #sys.exit()
 
+
+
+#function to format a number with a precision
+def format_precision(number, max_precision = 2):
+    #for 0 to max precision
+    for i in range(max_precision+1):
+        #check if this precision does not results into a 0 (which means the precision is correct)
+        if float(f"{number:.{i}f}") != 0:
+                #return this precision string
+                return f"{number:.{i}f}"
+    #no matches found, return max precision
+    #no matches found, return max precision string
+    return f"{number:.{max_precision}f}"
