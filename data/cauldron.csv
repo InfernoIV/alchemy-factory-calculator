@@ -1,21 +1,64 @@
-resource,value,target_value
+resource,value,target_value,heat_need
+plank,1,0.1,
+charcoal,2,2,
+stone,4,4,
+quicklime,6,6,
+iron sand,15.5,15,12.6
+clay,21,20,16.6
+coke,29,30,
+coal,40,30,
+salt,65,65,65.6
+yeast powder,88,88,
+turquoise,108,108,131
+black powder,145,150,190
+impure copper powder,150,180,235
+sulfur,166,246,343
+gloom spores,220,280,403
+copper powder,290,350,537
+malachite,367,427,699
+crude shard,272,512,896
+oblivion essence,600,600,
+unstable catalyst,746,746,1538
+vitality essence,900,900,2040
+broken shard,824,1024,
+topaz,1206,1406,
+crude silver powder,1274,1647,3834
+dull shard,1548,2048,
+impure silver powder,2547,3347,
+fertile catalyst,4068,3568,
+fairy dust,3060,3760,
+shattered crystal,3496,4096,
+silver powder,4742,4742,
+obisidian,5290,5290,
+star dust,4149,6149,
+crude crystal,6692,8192,
+crude gold dust,10805,13805,
+polished crystal,14384,16384,
+lapis lazuli,15825,18825,
+resonant crystal,23869,22869,
+impure gold dust,21611,27611,
+adamant,30768,32768,
+gold dust,42357,52357,
+diamond,65536,65536,
+pure gold dust,84715,99715,
+perfect diamond,131072,131072,
+ruby,200000,200000,
+sapphire,400000,400000,
+emerald,600000,600000,
+philosopher's stone,1000000,1000000,
 small wooden gear,0.33
 copper coin,0.68
 logs,0.8
-plank,1,0.1
 large wooden gear,1.5
 flax,2
-charcoal,2,2
 charcoal powder,2.5
 flax fiber,2.5
 limestone,3
 sage,3
 sage powder,3.5
-stone,4,4
 plant ash,4
 sand,4.5
 iron nails,5
-quicklime,6,6
 rotten log,6.5
 quicklime powder,7
 refined sand 1,8
@@ -26,24 +69,20 @@ redcurrant,12
 linen rope,13
 wooden pulley,14
 iron ingot,15
-iron sand,15.5,15
 refined sand 2,16
 mortar,18
-clay,21,20
 clay powder,22
 soap,23
 soap powder,24
 brick,25
 gloom fungus,26
 glass,27
-coke,29,30
 healing potion,30
 coke powder,31
 refined sand 3,32
 jupiter,34
 rock salt,35
 coal ore,37
-coal,40,30
 pyrite ore,45
 bronze rivet,51
 chamomile,55
@@ -51,91 +90,52 @@ chamomile powder,57
 advanced fertilizer,58
 linen,60
 refined sand 4,64
-salt,65,65
-yeast powder,88,88
 gelatinous gridlock,100
-turquoise,108,108
 flax seeds,115
 bandage,120
 vitality potion,125
 refined sand 5,128
 copper bearing,137
-black powder,145,150
-impure copper powder,150,180
 bronze ingot,155
 steel ingot,161
-sulfur,166,246
 steel gear,170
 sage seeds,175
 lavender,180
 sulfur powder,200
-gloom spores,220,280
 quartz ore,230
 transformation potion,240
 fully refined sand,256
-crude shard,272,512
-copper powder,290,350
 copper ingot,300
-malachite,367,427
 gentian,400
 gentian nectar,420
 gentian powder,430
 growth potion,500
-oblivion essence,600,600
 redcurrant seeds,650
 saturn,714
-unstable catalyst,746,746
 portal sigil,750
 pocket watch,789
 meteorite,800
-broken shard,824,1024
-vitality essence,900,900
 silver coin,949
 blast potion,1197
-topaz,1206,1406
 perfumed soap powder,1216
 perfumed soap,1216
-crude silver powder,1274,1647
-dull shard,1548,2048
 mars,1678
 chamomile seeds,2300
 world tree leaf,2500
-impure silver powder,2547,3347
 venus,2550
-fairy dust,3060,3760
-shattered crystal,3496,4096
-fertile catalyst,4068,3568
-star dust,4149,6149
-silver powder,4742,4742
 silver ingot,4746
 volcanic ash,5920
-obisidian,5290,5290
 lavender seeds,6000
-crude crystal,6692,8192
-crude gold dust,10805,13805
-polished crystal,14384,16384
 panacea potion,15306
-lapis lazuli,15825,18825
-impure gold dust,21611,27611
-resonant crystal,23869,22869
 silver amulet,25317
 mercury,26928
 gentian seeds,29000
-adamant,30768,32768
-gold dust,42357,52357
-diamond,65536,65536
-pure gold dust,84715,99715
 gold ingot,87223
 gold coin,89723
-perfect diamond,131072,131072
 luna,187168
-ruby,200000,200000
 world tree core,250000
-sapphire,400000,400000
 moonlit soap,487893
-emerald,600000,600000
 crown,854168
-philosopher's stone,1000000,1000000
 eternal catalyst,1193042
 world tree seed,5000000
 sol,5587946

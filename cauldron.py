@@ -1,6 +1,6 @@
 
 import csv
-from constants import ___CSV_CAULDRON____, ___PREFERRED_RESOURCES___, ___SHOW_AMOUNT_OF_CAULDRON_POSSIBILITIES___
+from constants import ___CSV_CAULDRON____, ___PREFERRED_RESOURCES___, ___SHOW_AMOUNT_OF_CAULDRON_POSSIBILITIES___, ___PREFERRED_RESOURCES_EXTENDED___
 from utility import print_variables
 from utility import format_precision
 
@@ -100,6 +100,7 @@ def get_cauldron_target(resource):
                     elif value > target_value:
                         #save to max
                         next_value = value
+                        print(f"previous = '{previous_value}', target = '{target_value}', next = '{next_value}'")
                         #stop looking
                         break     
         #if exception
@@ -147,6 +148,35 @@ def get_cauldron_resources():
 
 
 
+def get_heat_cost(resource):
+#check for all the same recipes to capture all output
+    with open(___CSV_CAULDRON____) as csvfile: 
+        #use a dict
+        reader = csv.DictReader(csvfile)
+        #try
+        try:
+            #for each row
+            for row in reader:
+                #if we have an exact match:
+                if resource == row["resource"]:
+                    #return this
+                    heat_need = row["heat_need"]
+                    #check if we can calulate
+                    if heat_need != None and heat_need != "":
+                        #return the head need
+                        return float(heat_need), None
+                    else:
+                        #cannot crafting using cauldron
+                        return 0, None
+                #if exception
+        except csv.Error as e:
+            #return the error
+            return None, 'file {}, line {}: {}'.format(___CSV_CAULDRON____, reader.line_num, e)
+    #no entry found
+    return None, "No resource found!"
+
+
+
 #base cauldron object
 class cauldron_obj(object):
     #list of resources, read and saved from the csv
@@ -175,14 +205,15 @@ class cauldron_obj(object):
         self.possiblities = []
         #get preferred combinations
         self.get_combinations(___PREFERRED_RESOURCES___.keys())
-        #print(f"self.possiblities (preferred): '{self.possiblities}'")
+        #check for extended combinations
+        self.get_combinations(___PREFERRED_RESOURCES_EXTENDED___.keys())
         #if we did not find any preferred combinations
         if self.possiblities == [] and only_preffered == False:
             #get other combinations
             self.get_combinations(self.resources.keys())      
             #print(f"self.possiblities (normal): '{self.possiblities}'")
-        #sort the list
-        #sorted(self.possiblities, key=lambda score: self.possiblities[0])
+        #remove duplicate recipes
+        self.remove_duplicate_recipes()
         #return the list
         return self.possiblities
 
@@ -229,8 +260,6 @@ class cauldron_obj(object):
                     if self.min <= score <= self.max:
                         #add to the list
                         self.possiblities.append([resource_1, resource_2, resource_3])
-        #remove duplicate recipes
-        self.remove_duplicate_recipes()
 
 
 
@@ -271,23 +300,37 @@ class cauldron_obj(object):
                 unqiue_recipes.append(sorted_recipe)
         #clear possibilities
         self.possiblities = []
+        #get heat cost for this resource (base heat cost)
+        cost_heat, _ = get_heat_cost(self.resource)
         #for each entry
         for possibility in unqiue_recipes:
             #initialize cost
-            cost = 0.0
+            cost_fertilzier = 0.0
             #for each resource
             for entry in possibility:
-                #add the cost
-                cost += float(___PREFERRED_RESOURCES___[entry])
+                #get the heat cost (if applicable)
+                cost_heat_component, error = get_heat_cost(entry)
+                #add heat cost
+                cost_heat += cost_heat_component
+                if entry in ___PREFERRED_RESOURCES___:
+                    #add the cost
+                    cost_fertilzier += float(___PREFERRED_RESOURCES___[entry])
+                #check extended list
+                elif entry in ___PREFERRED_RESOURCES_EXTENDED___:
+                    #add the cost
+                    cost_fertilzier += float(___PREFERRED_RESOURCES_EXTENDED___[entry]) 
             #add to the list of possibilities
-            self.possiblities.append([cost, possibility])
+            self.possiblities.append([cost_fertilzier, cost_heat, possibility])
         #sort on fertilizer cost
-        self.possiblities = sorted(self.possiblities)
+        self.possiblities = sorted(self.possiblities, key=lambda possibility: possibility[0])
+        #sort on heat cost
+        self.possiblities = sorted(self.possiblities, key=lambda possibility: possibility[1])
 
 
     def describe_target(self):
+        heat_need,error = get_heat_cost(self.resource)
         #print self
-        print(f"Cauldron target '{self.resource}' is between '{self.min}' and '{self.max}'")
+        print(f"Cauldron target '{self.resource}' is between '{self.min}' and '{self.max}', requires a base heat need of {heat_need}")
     
     
 
@@ -296,8 +339,8 @@ class cauldron_obj(object):
         print(f"Cauldron possiblities ({len(self.possiblities)}):")
         #for each entry
         for possibility in self.possiblities[:___SHOW_AMOUNT_OF_CAULDRON_POSSIBILITIES___]:
-            score = self.calculate_score(possibility[1][0], possibility[1][1], possibility[1][2])# resource_1, resource_2, resource_3
+            score = self.calculate_score(possibility[2][0], possibility[2][1], possibility[2][2])# resource_1, resource_2, resource_3
             #print the possiblity
-            print(f"f. cost: {possibility[0]:.2f}, score: {score}, inputs: {", ".join(possibility[1])}")
+            print(f"fertilizer: {possibility[0]:.2f}, heat: {format_precision(possibility[1])}, score: {score}, inputs: {", ".join(possibility[2])}")
 
 
