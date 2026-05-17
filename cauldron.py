@@ -1,6 +1,8 @@
 
 import csv
-from constants import ___CSV_CAULDRON____
+from constants import ___CSV_CAULDRON____, ___PREFERRED_RESOURCES___
+from utility import print_variables
+
 
 def get_cauldron_name(resource):
     #value to return
@@ -17,10 +19,14 @@ def get_cauldron_name(resource):
                 resource_name = row["resource"]
                 #check only for fuzzy matching recipe names
                 if resource in resource_name:
+                    #if we have an exact match:
+                    if resource == resource_name:
+                        #return this
+                        return resource_name, None
                     #if we already found something before
                     if target_resource != "":
                         #return terror
-                        return None, f"Found multiple values found for '{resource}'"
+                        return None, f"Found at least values found for '{resource}': '{target_resource}', '{resource_name}'"
                     #save the resource name
                     target_resource = resource_name
                 #if exception
@@ -69,7 +75,8 @@ def get_cauldron_target(resource):
         except csv.Error as e:
             #return the error
             return None, 'file {}, line {}: {}'.format(___CSV_CAULDRON____, reader.line_num, e)
-    print(f"target: {target_value}")
+    #debug
+    #print(f"target: {target_value}")
     #get the min and max
     #check for all the same recipes to capture all output
     with open(___CSV_CAULDRON____) as csvfile: 
@@ -156,57 +163,21 @@ class cauldron_obj(object):
 
 
 
-    def calc_possiblities(self):
+    def calc_possiblities(self, only_preffered=False):
         #get resources
         self.retrieve_resources()
         #clear list
         self.possiblities = []
-
-        #print(f"self.resources: '{self.resources}'")
-
-        #first resource
-        for resource_1, value_1 in self.resources.items():
-            #check for target resources (no usefull)
-            if resource_1 == self.resource:
-                #next
-                continue
-            #second resource
-            for resource_2, value_2 in self.resources.items():
-                #check for target resources (no usefull)
-                if resource_2 == self.resource:
-                    #next
-                    continue
-                #third resource
-                for resource_3, value_3 in self.resources.items():
-                    #check for target resources (no usefull)
-                    if resource_3 == self.resource:
-                        #next
-                        continue
-                    #calculate multiplier (1, 0.65, 0.5)
-                    multiplier = 1
-                    #if all the same resources
-                    if resource_1 == resource_2 and resource_1 == resource_3:
-                        #multiplier is lowest
-                        multiplier = 0.5
-                    #if only 2 the same resources
-                    elif resource_1 == resource_2 or resource_1 == resource_3:
-                        #multiplier is lower
-                        multiplier = 0.65
-                    #check the score
-                    score = float(((value_1 + value_2 + value_3) * int(multiplier*100))/100)
-                    #debug
-                    #if resource_1 == resource_2 and resource_1 == resource_3:
-                    #    print(f"3 same resources: {score} = {resource_1}:{value_1}, {resource_2}:{value_2}, {resource_3}:{value_3}")
-                    #elif resource_1 == resource_2 or resource_1 == resource_3:
-                    #    print(f"2 same resources: {score} = {resource_1}:{value_1}, {resource_2}:{value_2}, {resource_3}:{value_3}")
-
-                    #if within target
-                    if self.min <= score <= self.max:
-                        #add to the list
-                        self.possiblities.append([score,{resource_1:value_1},{resource_2:value_2},{resource_3:value_3}])
-
+        #get preferred combinations
+        self.get_combinations(___PREFERRED_RESOURCES___)
+        #print(f"self.possiblities (preferred): '{self.possiblities}'")
+        #if we did not find any preferred combinations
+        if self.possiblities == [] and only_preffered == False:
+            #get other combinations
+            self.get_combinations(self.resources.keys())      
+            #print(f"self.possiblities (normal): '{self.possiblities}'")
         #sort the list
-        sorted(self.possiblities, key=lambda score: self.possiblities[0])
+        #sorted(self.possiblities, key=lambda score: self.possiblities[0])
         #return the list
         return self.possiblities
 
@@ -226,6 +197,68 @@ class cauldron_obj(object):
 
 
 
+    def get_combinations(self, resource_list):
+        for resource_1 in resource_list:
+            #check for target resources (no usefull)
+            if resource_1 == self.resource:
+                #next
+                continue
+            #get the value
+            value_1 = self.resources[resource_1]
+            #second resource
+            for resource_2 in resource_list:
+                #check for target resources (no usefull)
+                if resource_2 == self.resource:
+                    #next
+                    continue
+                #get the value
+                value_2 = self.resources[resource_2]
+                #third resource
+                for resource_3 in resource_list:
+                    #check for target resources (no usefull)
+                    if resource_3 == self.resource:
+                        #next
+                        continue
+                    #get the value
+                    value_3 = self.resources[resource_3]
+                    #calculate multiplier (1, 0.65, 0.5)
+                    multiplier = 1
+                    #if all the same resources
+                    if resource_1 == resource_2 and resource_1 == resource_3:
+                        #multiplier is lowest
+                        multiplier = 0.5
+                    #if only 2 the same resources
+                    elif resource_1 == resource_2 or resource_1 == resource_3 or resource_2 == resource_3:
+                        #multiplier is lower
+                        multiplier = 0.65
+                    #check the score
+                    score = float(((value_1 + value_2 + value_3) * int(multiplier*100))/100)
+                    #debug
+                    #print(f"score: '{score}', multiplier: '{multiplier}'{resource_1:value_1},{resource_2:value_2},{resource_3:value_3}")
+                    print_variables(score, multiplier, resource_1, value_1, resource_2, value_2, resource_3, value_3)
+                    #if within target
+                    if self.min <= score <= self.max:
+                        #add to the list
+                        self.possiblities.append([resource_1, resource_2, resource_3])
+        #remove duplicate recipes
+        self.remove_duplicate_recipes()
+
+
+
+    def remove_duplicate_recipes(self):
+        #list to keep track of unique recipes
+        unqiue_recipes = []
+        #for all the available recipes
+        for recipe in self.possiblities:
+            #sort
+            sorted_recipe = sorted(recipe)
+            #if recipe is not yet found
+            if sorted_recipe not in unqiue_recipes:
+                #add to list
+                unqiue_recipes.append(sorted_recipe)
+        #only save the unique recipes
+        self.possiblities = unqiue_recipes
+
     def describe_target(self):
         #print self
         print(f"Cauldron target '{self.resource}' is between '{self.min}' and '{self.max}'")
@@ -238,6 +271,6 @@ class cauldron_obj(object):
         #for each entry
         for possibility in self.possiblities[:100]:
             #print the possiblity
-            print(f"{possibility}")
+            print(f"{", ".join(possibility)}")
 
 

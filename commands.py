@@ -140,7 +140,7 @@ def cauldron(resource, amount):
     #show the numbers
     cauldron_obj.describe_target()
     #calculate the options
-    cauldron_obj.calc_possiblities()
+    cauldron_obj.calc_possiblities(True)
     #show the options:
     cauldron_obj.describe_possiblities()
 

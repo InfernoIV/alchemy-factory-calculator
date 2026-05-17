@@ -35,3 +35,12 @@ ___PREFERRED_RECIPES___ = [
     #or:
     #"stone and coal",
 ]
+
+___PREFERRED_RESOURCES___ = [
+    "flax", "flax fiber",
+    "sage", "sage powder",
+    "redcurrant",
+    "lavender",
+    "chamomile", "chamomile powder",
+    "gentian", "gentian powder", "gentian nectar",
+]
