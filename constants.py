@@ -45,6 +45,19 @@ ___PREFERRED_RESOURCES___ = {
     "chamomile":0.22, "chamomile powder":0.22,
     "gentian":1.8, "gentian powder":1.8, "gentian nectar":1.8, #1/2 due to split output, but 2 needed for 60 output 
     "world tree leaf":18, 
+
+    "impure copper powder":0.67, #flax, flax fiber, lavender
+    "turquoise":1.09, #chamomile, chamomile powder, lavender
+    "copper powder":1.82, #flax, flax fiber, gentian
+    "malachite":1.82, #flax, sage, gentian
+    "salt":0.24, #chamomile,flax,flax fiber
+    "gloom spores":1.09, #chamomile, chamomile powder, lavender
+    #TODO: verify calculation
+    "clay":0.06, #flax, redcurrant, sage powder or flax fiber, redcurrant, sage powder
+    #"black powder":, #
+    #"unstable catalyst":, #
+    #"vitality essence":, #
+    #"":, #
 }
 
 

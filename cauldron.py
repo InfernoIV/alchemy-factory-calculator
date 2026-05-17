@@ -161,9 +161,9 @@ class cauldron_obj(object):
         #set max
         self.max = float(max)
         #set min tighter to prevent overlap & bordering
-        self.min += 0.1
+        #self.min += 0.01
         #set max tighter to prevent overlap & bordering
-        self.max -= 0.1
+        #self.max -= 0.1
 
 
 
@@ -298,6 +298,6 @@ class cauldron_obj(object):
         for possibility in self.possiblities[:___SHOW_AMOUNT_OF_CAULDRON_POSSIBILITIES___]:
             score = self.calculate_score(possibility[1][0], possibility[1][1], possibility[1][2])# resource_1, resource_2, resource_3
             #print the possiblity
-            print(f"fertilizer cost: {possibility[0]:.2f}, score: {score}, inputs: {", ".join(possibility[1])}")
+            print(f"f. cost: {possibility[0]:.2f}, score: {score}, inputs: {", ".join(possibility[1])}")
 
 
