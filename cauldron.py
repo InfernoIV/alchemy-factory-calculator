@@ -402,7 +402,7 @@ class cauldron_obj(object):
     def describe_target(self):
         heat_need,error = get_heat_cost(self.resource)
         #print self
-        print(f"Cauldron target '{self.resource}' has a target of '{self.target_value}', requires a base heat need of {heat_need}")
+        print(f"Cauldron target '{self.resource}' requires a base heat need of {heat_need}")
     
     
 
@@ -413,6 +413,6 @@ class cauldron_obj(object):
         for possibility in self.possiblities[:___SHOW_AMOUNT_OF_CAULDRON_POSSIBILITIES___]:
             score = self.calculate_score(possibility[2][0], possibility[2][1], possibility[2][2])# resource_1, resource_2, resource_3
             #print the possiblity
-            print(f"fertilizer: {possibility[0]:.2f}, heat: {format_precision(possibility[1])}, score: {score}, inputs: {", ".join(possibility[2])}")
+            print(f"fertilizer: {possibility[0]:.2f}, heat: {format_precision(possibility[1])}, inputs: {", ".join(possibility[2])}")
 
 

@@ -102,6 +102,10 @@ ___PREFERRED_RESOURCES_EXTENDED___ = {
 
     #fertilizer: 12.17, heat: 10315, score: 2170.0, inputs: crude silver powder, impure copper powder, unstable catalyst
     "dull shard":12.17,
+
+    #fertilizer: 19.81, heat: 8155, score: 2902.0, inputs: flax, gentian, world tree leaf
+    #fertilizer: 19.81, heat: 8155, score: 2922.0, inputs: flax, gentian nectar, world tree leaf
+    "impure silver powder":19.81,
 }
 
 
