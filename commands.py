@@ -120,29 +120,8 @@ def usage(resource, amount):
 
 
 def cauldron(resource, amount):
-    #check for the name
-    target_resource, error = get_cauldron_name(resource)
-    #check for error
-    if error != None:
-         #return the error
-         return error
-    #check if resource name has changed
-    if resource != target_resource:
-         #indicate mapped input 
-         print(f"mapped '{resource}' into '{target_resource}'")
-    
-    #get the actual recipe
-    cauldron_obj, error = get_cauldron_target(target_resource)
-    #check for error
-    if error != None:
-         #return the error
-         return error
-    #show the numbers
-    cauldron_obj.describe_target()
-    #calculate the options
-    cauldron_obj.calc_possiblities(True)
-    #show the options:
-    cauldron_obj.describe_possiblities()
+    #calucate the cauldron recipes for the resource
+    calculate_cauldron(resource, 2)
 
 
 
