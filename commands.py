@@ -121,7 +121,7 @@ def usage(resource, amount):
 
 def cauldron(resource, amount):
     #calucate the cauldron recipes for the resource
-    calculate_cauldron(resource, 2)
+    calculate_cauldron(resource, amount)
 
 
 
