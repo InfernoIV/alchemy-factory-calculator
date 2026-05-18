@@ -51,7 +51,7 @@ ___PREFERRED_RESOURCES___ = {
 #key = resource, value = fertilizer cost, heat cost
 #TODO: verify calculation for clay
 ___PREFERRED_RESOURCES_EXTENDED___ = {
-    #fertilizer: 0.67, heat: 235.0, score: 184.5, inputs: flax, flax fiber, lavender
+    #fertilizer: 0.67, heat: 235, score: 184.5, inputs: flax, flax fiber, lavender
     "impure copper powder":0.67, 
 
     #fertilizer: 0.45, heat: 131, score: 114.0, inputs: chamomile, chamomile powder, flax
@@ -68,14 +68,14 @@ ___PREFERRED_RESOURCES_EXTENDED___ = {
     #fertilizer: 0.24, heat: 65.6, score: 59.5, inputs: chamomile, flax, flax fiber
     "salt":0.24, 
 
-    #fertilizer: 1.09, heat: 403.0, score: 292.0, inputs: chamomile, chamomile powder, lavender
+    #fertilizer: 1.09, heat: 403, score: 292.0, inputs: chamomile, chamomile powder, lavender
     "gloom spores":1.09, 
 
     #fertilizer: 0.06, heat: 16.6, score: 17.5, inputs: flax, redcurrant, sage powder
     #or fertilizer: 0.06, heat: 16.6, score: 18.0, inputs: flax fiber, redcurrant, sage powder
     "clay":0.06, 
 
-    #fertilizer: 0.73, heat: 190.0, score: 132.6, inputs: lavender, redcurrant, redcurrant
+    #fertilizer: 0.73, heat: 190, score: 132.6, inputs: lavender, redcurrant, redcurrant
     "black powder":0.73, 
 
     #fertilizer: 3.61, heat: 1538, score: 823.0, inputs: gentian, gentian nectar, sage
@@ -91,9 +91,17 @@ ___PREFERRED_RESOURCES_EXTENDED___ = {
     #fertilizer: 2.03, heat: 896, score: 478.0, inputs: chamomile, gentian nectar, sage
     "crude shard":2.03,
 
-    #fertilizer: 18.02, heat: 3834, score: 1627.6, inputs: flax, flax, world tree leaf
     #fertilizer: 7.89, heat: 7647, score: 1796.0, inputs: impure copper powder, unstable catalyst, vitality essence
     "crude silver powder":7.89,
+
+    #fertilizer: 5.40, heat: 3244, score: 1250.0, inputs: gentian, gentian nectar, gentian powder
+    "topaz":5.40,
+
+    #fertilizer: 4.25, heat: 2448, score: 1000.0, inputs: gentian, gentian nectar, lavender
+    "broken shard":4.25,
+
+    #fertilizer: 12.17, heat: 10315, score: 2170.0, inputs: crude silver powder, impure copper powder, unstable catalyst
+    "dull shard":12.17,
 }
 
 

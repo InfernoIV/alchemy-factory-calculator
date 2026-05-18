@@ -5,6 +5,25 @@ from utility import print_variables
 from utility import format_precision
 
 def get_cauldron_name(resource):
+    #check for exact match
+    #check for all the same recipes to capture all output
+    with open(___CSV_CAULDRON____) as csvfile: 
+        #use a dict
+        reader = csv.DictReader(csvfile)
+        #try
+        try:
+            #for each row
+            for row in reader:
+                #get the resource name
+                resource_name = row["resource"]
+                #if we have an exact match:
+                if resource == resource_name:
+                    #return this
+                    return resource_name, None
+        except csv.Error as e:
+            #return the error
+            return None, 'file {}, line {}: {}'.format(___CSV_CAULDRON____, reader.line_num, e)
+    #check for fuzzy match
     #value to return
     target_resource = ""
     #check for all the same recipes to capture all output
@@ -45,10 +64,16 @@ def get_cauldron_name(resource):
 def get_cauldron_target(resource):
     #target value
     target_value = float(0)
+    #target multiplier
+    target_multiplier = float(0)
     #previous value
     previous_value = float(0)
+    #previous multplier
+    previous_multiplier = float(0)
     #next value
     next_value = float(0)
+    #next multiplier
+    next_multiplier = float(0)
 
     #get the actual value first
     #check for all the same recipes to capture all output
@@ -69,6 +94,14 @@ def get_cauldron_target(resource):
                         return None, f"No cauldron recipe possible for {resource}"
                     #cast to float
                     target_value = float(target_value)
+                    #get multiplier
+                    target_multiplier = row["multiplier"]
+                    #check if feasable
+                    if target_multiplier == None:
+                        #return error
+                        return None, f"No cauldron recipe possible for {resource}"
+                    #cast to float
+                    target_multiplier = float(target_multiplier)
                     #stop looking
                     break
         #if exception
@@ -88,6 +121,8 @@ def get_cauldron_target(resource):
             for row in reader:
                 #get the value
                 value = row["target_value"]
+                #get the multiplier
+                mutliplier = row["multiplier"]
                 #only when it is a value
                 if value != None:
                     #cast to float
@@ -96,34 +131,57 @@ def get_cauldron_target(resource):
                     if value < target_value:
                         #save to min
                         previous_value = value
+                        #save the multiplier
+                        previous_multiplier = mutliplier
                     #if higher than target
                     elif value > target_value:
                         #save to max
                         next_value = value
-                        print(f"previous = '{previous_value}', target = '{target_value}', next = '{next_value}'")
+                        #save the multiplier
+                        next_multiplier = mutliplier
+                        #debug
+                        #print(f"previous = '{previous_value}' * '{previous_multiplier}', target = '{target_value}' * '{target_multiplier}', next = '{next_value}' * '{next_multiplier}'")
                         #stop looking
                         break     
         #if exception
         except csv.Error as e:
             #return the error
             return None, 'file {}, line {}: {}'.format(___CSV_CAULDRON____, reader.line_num, e)    
-    #calculate min
-    target_min = float((previous_value+target_value)/2)
-    #if previous was not set
-    if previous_value == float(0):
-        #set to bottom
-        target_min = float(0)
-    #calculate max
-    target_max = float((next_value+target_value)/2)
-    #if max not set
-    if next_value == float(0):
-        #set to max value
-        target_max = float('inf')
+    #put the value in the middle
+    target_min = previous_value
+    #go through calculations
+    while True:
+        #calculate the previous distance
+        previous_distance = float(abs(target_min - previous_value)) * float(previous_multiplier)
+        #calculate the target distance
+        target_distance = float(abs(target_min - target_value)) * float(target_multiplier)
+        #if the target distance is closer
+        if target_distance < previous_distance:    
+            #stop
+            break
+        #otherwise up the value
+        target_min += 1
+    #put the value in the middle
+    target_max = next_value
+    #go through calculations
+    while True:
+        #calculate the previous distance
+        next_distance = float(abs(target_max - next_value)) * float(next_multiplier)
+        #calculate the target distance
+        target_distance = float(abs(target_max - target_value)) * float(target_multiplier)
+        #debug
+        #print(f"target_distance: '{target_distance}', next_distance: '{next_distance}'")
+        #if the target distance is closer
+        if target_distance < next_distance:
+            #stop
+            break
+        #otherwise down the value
+        target_max -= 1
     #create cauldron object
-    cauldron = cauldron_obj(resource, target_min, target_max)
+    cauldron = cauldron_obj(resource, target_value, target_multiplier, previous_value, previous_multiplier, next_value, next_multiplier)
     #get the target value
     return cauldron, None
-    
+
 
 
 def get_cauldron_resources():
@@ -183,20 +241,16 @@ class cauldron_obj(object):
     resources = []
 
     # The class "constructor" - It's actually an initializer 
-    def __init__(self, resource, min, max):
+    def __init__(self, resource, target_value, target_multiplier, previous_value, previous_multiplier, next_value, next_multiplier):
         #set resource
         self.resource = str(resource)
-        #set min
-        self.min = float(min)
-        #set max
-        self.max = float(max)
-        #set min tighter to prevent overlap & bordering
-        #self.min += 0.01
-        #set max tighter to prevent overlap & bordering
-        #self.max -= 0.1
-
-
-
+        #save the data
+        self.target_value = target_value
+        self.target_multiplier = target_multiplier
+        self.previous_value = previous_value
+        self.previous_multiplier = previous_multiplier
+        self.next_value = next_value
+        self.next_multiplier = next_multiplier
 
     def calc_possiblities(self, only_preffered=False):
         #get resources
@@ -253,13 +307,22 @@ class cauldron_obj(object):
                         continue
                     #get the score
                     score = self.calculate_score(resource_1, resource_2, resource_3)
-                    #debug
-                    #print(f"score: '{score}', multiplier: '{multiplier}'{resource_1:value_1},{resource_2:value_2},{resource_3:value_3}")
-                    #print_variables(score, multiplier, resource_1, value_1, resource_2, value_2, resource_3, value_3)
                     #if within target
-                    if self.min <= score <= self.max:
+                    if self.check_within_target(score):
                         #add to the list
                         self.possiblities.append([resource_1, resource_2, resource_3])
+
+
+
+    def check_within_target(self, score):
+        #calculate distance to target 
+        target_distance = float(abs(score - self.target_value)) * float(self.target_multiplier)
+        #get the distance to the previous
+        previous_distance = float(abs(score - self.previous_value)) * float(self.previous_multiplier)
+        #get the distance to the next
+        next_distance = float(abs(score - self.next_value)) * float(self.next_multiplier)
+        #return if target distance is smaller than the neighbours
+        return target_distance < previous_distance and target_distance < next_distance
 
 
 
@@ -285,7 +348,7 @@ class cauldron_obj(object):
         #return the score
         return score
 
-
+    
 
     def remove_duplicate_recipes(self):
         #list to keep track of unique recipes
@@ -310,8 +373,17 @@ class cauldron_obj(object):
             for entry in possibility:
                 #get the heat cost (if applicable)
                 cost_heat_component, error = get_heat_cost(entry)
+                #check for error
+                if error != None:
+                    #return the error
+                    return error
+                #if not set
+                if cost_heat_component == None:
+                    #set to 0
+                    cost_heat_component = 0
                 #add heat cost
                 cost_heat += cost_heat_component
+
                 if entry in ___PREFERRED_RESOURCES___:
                     #add the cost
                     cost_fertilzier += float(___PREFERRED_RESOURCES___[entry])
@@ -330,7 +402,7 @@ class cauldron_obj(object):
     def describe_target(self):
         heat_need,error = get_heat_cost(self.resource)
         #print self
-        print(f"Cauldron target '{self.resource}' is between '{self.min}' and '{self.max}', requires a base heat need of {heat_need}")
+        print(f"Cauldron target '{self.resource}' has a target of '{self.target_value}', requires a base heat need of {heat_need}")
     
     
 
